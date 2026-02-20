@@ -226,6 +226,24 @@ export function getLoggedInUser(): User | null {
     return JSON.parse(raw) as User;
 }
 
+// Only validates credentials, does NOT set session (used before OTP)
+export function validateCredentials(email: string, password: string): User | null {
+    if (typeof window === "undefined") return null;
+    const raw = localStorage.getItem("schedula_users");
+    if (!raw) return null;
+    const users: User[] = JSON.parse(raw);
+    const found = users.find(
+        (u) => u.email.toLowerCase() === email.toLowerCase() && u.password === password
+    );
+    return found || null;
+}
+
+// Sets the user session (called AFTER OTP verification)
+export function setUserSession(user: User) {
+    if (typeof window === "undefined") return;
+    localStorage.setItem("schedula_current_user", JSON.stringify(user));
+}
+
 export function loginUser(email: string, password: string): User | null {
     if (typeof window === "undefined") return null;
     const raw = localStorage.getItem("schedula_users");

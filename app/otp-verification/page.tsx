@@ -3,7 +3,7 @@
 import { useState, Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import Swal from "sweetalert2";
-import { registerUser, loginUser } from "../lib/data";
+import { registerUser, setUserSession } from "../lib/data";
 import type { User } from "../lib/data";
 
 function OTPContent() {
@@ -23,8 +23,8 @@ function OTPContent() {
         const pendingRaw = sessionStorage.getItem("schedula_login_pending");
         if (pendingRaw) {
           const user: User = JSON.parse(pendingRaw);
-          // Re-set as current user
-          localStorage.setItem("schedula_current_user", JSON.stringify(user));
+          // Only NOW set the session — this is the gate
+          setUserSession(user);
           sessionStorage.removeItem("schedula_login_pending");
         }
         Swal.fire({

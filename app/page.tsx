@@ -5,7 +5,7 @@ import { Eye, EyeOff } from "lucide-react";
 import Swal from "sweetalert2";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { seedDefaultUser, loginUser } from "./lib/data";
+import { seedDefaultUser, validateCredentials } from "./lib/data";
 
 export default function Home() {
   const router = useRouter();
@@ -35,10 +35,13 @@ export default function Home() {
       return;
     }
 
-    const user = loginUser(email, password);
+    // Only validate — do NOT set session yet
+    const user = validateCredentials(email, password);
     if (user) {
-      // Store login intent and go to OTP verification
+      // Store user in sessionStorage for OTP page to finalize
       sessionStorage.setItem("schedula_login_pending", JSON.stringify(user));
+      // Clear any existing session so dashboard can't be accessed without OTP
+      localStorage.removeItem("schedula_current_user");
       Swal.fire({
         icon: "info",
         title: "OTP Sent!",
