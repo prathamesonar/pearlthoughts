@@ -88,9 +88,11 @@ export default function Home() {
 
         {/* Demo Credentials */}
         <div className="mb-5 bg-cyan-50 border border-cyan-200 rounded-xl p-3 text-sm">
-          <p className="font-semibold text-cyan-700 mb-1">✨ Demo Credentials</p>
+          <p className="font-semibold text-cyan-700 mb-1">Demo Credentials</p>
           <p className="text-cyan-600">Email: <span className="font-mono font-medium">demo@gmail.com</span></p>
           <p className="text-cyan-600">Password: <span className="font-mono font-medium">Demo@123</span></p>
+          <p className="text-cyan-600">OTP: <span className="font-mono font-medium">123456</span></p>
+
         </div>
 
         <form className="space-y-6" onSubmit={handleLogin}>

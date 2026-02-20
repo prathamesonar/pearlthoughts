@@ -147,9 +147,9 @@ function OTPContent() {
         </p>
 
         {/* Hint */}
-        <div className="mb-6 bg-emerald-50 border border-emerald-200 rounded-xl p-3 text-center text-sm">
+        {/* <div className="mb-6 bg-emerald-50 border border-emerald-200 rounded-xl p-3 text-center text-sm">
           <p className="text-emerald-700">💡 Hint: OTP is <span className="font-mono font-bold">123456</span></p>
-        </div>
+        </div> */}
 
         <form onSubmit={handleVerify} className="space-y-6">
           {/* 6 Individual Digit Boxes */}
