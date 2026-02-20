@@ -14,15 +14,16 @@ export default function SignupPage() {
   const handleSignup = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const target = e.target as typeof e.target & {
+      fullname: { value: string };
       email: { value: string };
       phone: { value: string };
       password: { value: string };
       confirmPassword: { value: string };
     };
 
-    const { email, phone, password, confirmPassword } = target;
+    const { fullname, email, phone, password, confirmPassword } = target;
 
-    if (!email.value || !phone.value || !password.value || !confirmPassword.value) {
+    if (!fullname.value || !email.value || !phone.value || !password.value || !confirmPassword.value) {
       Swal.fire({
         icon: "error",
         title: "All fields are required",
@@ -39,6 +40,18 @@ export default function SignupPage() {
       });
       return;
     }
+
+    // Store pending user data in sessionStorage for OTP verification
+    sessionStorage.setItem(
+      "schedula_pending_user",
+      JSON.stringify({
+        name: fullname.value,
+        email: email.value,
+        phone: phone.value,
+        password: password.value,
+        location: "India",
+      })
+    );
 
     // Simulate sending OTP and redirect to OTP verification page
     router.push(`/otp-verification?phone=${phone.value}`);
@@ -68,6 +81,16 @@ export default function SignupPage() {
         </p>
 
         <form className="space-y-5" onSubmit={handleSignup}>
+          <div>
+            <input
+              type="text"
+              name="fullname"
+              placeholder="Enter your full name"
+              required
+              className="w-full px-4 py-3 rounded-xl border border-gray-200 bg-gray-50/50 focus:ring-2 focus:ring-cyan-500 focus:border-transparent focus:outline-none placeholder-gray-400 text-gray-900 transition"
+            />
+          </div>
+
           <div>
             <input
               type="email"

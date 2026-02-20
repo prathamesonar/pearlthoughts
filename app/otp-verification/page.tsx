@@ -1,38 +1,55 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import Swal from "sweetalert2";
+import { registerUser } from "../lib/data";
+import type { User } from "../lib/data";
 
-export default function OTPPage() {
+function OTPContent() {
   const [otp, setOtp] = useState("");
-  const [phone, setPhone] = useState<string | null>(null);
   const router = useRouter();
-
-  useEffect(() => {
-    const searchParams = useSearchParams();
-    setPhone(searchParams.get("phone"));
-  }, []);
+  const searchParams = useSearchParams();
+  const phone = searchParams.get("phone");
 
   const correctOTP = "123456"; // Simulated OTP
 
   const handleVerify = (e: React.FormEvent) => {
     e.preventDefault();
     if (otp === correctOTP) {
+      // Retrieve pending user data from sessionStorage and register
+      const pendingRaw = sessionStorage.getItem("schedula_pending_user");
+      if (pendingRaw) {
+        const pendingUser: User = JSON.parse(pendingRaw);
+        const success = registerUser(pendingUser);
+        if (!success) {
+          Swal.fire({
+            icon: "warning",
+            title: "Email Already Exists",
+            text: "An account with this email already exists. Please login instead.",
+            confirmButtonColor: "#22d3ee",
+          }).then(() => {
+            router.push("/");
+          });
+          return;
+        }
+        sessionStorage.removeItem("schedula_pending_user");
+      }
+
       Swal.fire({
         icon: "success",
         title: "Account Created!",
         text: `Your account for ${phone} has been successfully created.`,
-        confirmButtonColor: "#22d3ee", // Cyan-400
+        confirmButtonColor: "#22d3ee",
       }).then(() => {
-        router.push("/"); // redirect to login
+        router.push("/");
       });
     } else {
       Swal.fire({
         icon: "error",
         title: "Invalid OTP",
         text: "Please enter the correct OTP sent to your mobile number.",
-        confirmButtonColor: "#22d3ee", // Cyan-400
+        confirmButtonColor: "#22d3ee",
       });
     }
   };
@@ -54,10 +71,16 @@ export default function OTPPage() {
       {/* OTP Card */}
       <div className="relative w-full max-w-md p-8 rounded-3xl bg-white/95 backdrop-blur-sm shadow-2xl border border-white/50 z-10">
         <h2 className="text-2xl font-bold text-gray-900 text-center mb-4">Verify OTP</h2>
-        <p className="text-center text-gray-600 mb-8">
+        <p className="text-center text-gray-600 mb-2">
           Enter the 6-digit OTP sent to <br />
           <span className="font-semibold text-cyan-600">{phone ?? "your phone"}</span>
         </p>
+
+        {/* Hint */}
+        <div className="mb-6 bg-emerald-50 border border-emerald-200 rounded-xl p-3 text-center text-sm">
+          <p className="text-emerald-700">💡 Hint: OTP is <span className="font-mono font-bold">123456</span></p>
+        </div>
+
         <form onSubmit={handleVerify} className="space-y-6">
           <input
             type="text"
@@ -77,12 +100,24 @@ export default function OTPPage() {
         </form>
 
         <p className="text-center text-gray-500 text-sm mt-6">
-          Didn't receive code?{" "}
+          Didn&apos;t receive code?{" "}
           <button className="font-bold text-cyan-500 hover:text-cyan-600 hover:underline transition-colors bg-transparent border-none cursor-pointer">
             Resend
           </button>
         </p>
       </div>
     </div>
+  );
+}
+
+export default function OTPPage() {
+  return (
+    <Suspense fallback={
+      <div className="min-h-screen flex items-center justify-center bg-gray-50">
+        <p className="text-gray-400">Loading...</p>
+      </div>
+    }>
+      <OTPContent />
+    </Suspense>
   );
 }

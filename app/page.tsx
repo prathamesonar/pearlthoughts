@@ -1,21 +1,28 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Eye, EyeOff } from "lucide-react";
 import Swal from "sweetalert2";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { seedDefaultUser, loginUser } from "./lib/data";
 
 export default function Home() {
+  const router = useRouter();
   const [showPassword, setShowPassword] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [isLoading, setIsLoading] = useState(false);
 
+  useEffect(() => {
+    seedDefaultUser();
+  }, []);
+
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
 
-    await new Promise((resolve) => setTimeout(resolve, 1500));
+    await new Promise((resolve) => setTimeout(resolve, 1000));
 
     if (!email || !password) {
       Swal.fire({
@@ -28,16 +35,26 @@ export default function Home() {
       return;
     }
 
-    Swal.fire({
-      icon: "success",
-      title: "Welcome Back!",
-      text: "Login successful.",
-      timer: 2000,
-      showConfirmButton: false,
-    });
+    const user = loginUser(email, password);
+    if (user) {
+      Swal.fire({
+        icon: "success",
+        title: "Welcome Back!",
+        text: `Hello, ${user.name}!`,
+        timer: 1500,
+        showConfirmButton: false,
+      }).then(() => {
+        router.push("/dashboard");
+      });
+    } else {
+      Swal.fire({
+        icon: "error",
+        title: "Invalid Credentials",
+        text: "Email or password is incorrect.",
+        confirmButtonColor: "#22d3ee",
+      });
+    }
 
-    setEmail("");
-    setPassword("");
     setIsLoading(false);
   };
 
@@ -55,7 +72,14 @@ export default function Home() {
 
       {/* Card */}
       <div className="relative z-10 w-full max-w-md bg-white/95 p-8 sm:p-10 rounded-3xl shadow-2xl border border-gray-200">
-        <h2 className="text-2xl font-bold text-gray-900 mb-6">Login</h2>
+        <h2 className="text-2xl font-bold text-gray-900 mb-4">Login</h2>
+
+        {/* Demo Credentials */}
+        <div className="mb-5 bg-cyan-50 border border-cyan-200 rounded-xl p-3 text-sm">
+          <p className="font-semibold text-cyan-700 mb-1">✨ Demo Credentials</p>
+          <p className="text-cyan-600">Email: <span className="font-mono font-medium">demo@gmail.com</span></p>
+          <p className="text-cyan-600">Password: <span className="font-mono font-medium">Demo@123</span></p>
+        </div>
 
         <form className="space-y-6" onSubmit={handleLogin}>
           {/* Email */}
