@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Eye, EyeOff } from "lucide-react";
+import { Eye, EyeOff, Stethoscope } from "lucide-react";
 import { useRouter } from "next/navigation";
 import Swal from "sweetalert2";
 import Link from "next/link";
@@ -73,6 +73,13 @@ export default function SignupPage() {
 
       {/* Signup Card */}
       <div className="relative w-full max-w-md p-8 sm:p-10 rounded-3xl bg-white/95 backdrop-blur-sm shadow-2xl border border-white/50 z-10">
+        {/* Logo */}
+        <div className="flex items-center justify-center gap-2 mb-6">
+          <Stethoscope className="w-8 h-8 text-cyan-500" />
+          <span className="text-2xl font-bold text-gray-900">Schedula</span>
+          <span className="text-xs text-cyan-500 font-medium bg-cyan-50 px-2 py-0.5 rounded-full">Healthcare</span>
+        </div>
+
         <h2 className="text-3xl font-bold text-gray-900 text-center mb-2">
           Create Account
         </h2>

@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { Eye, EyeOff } from "lucide-react";
+import { Eye, EyeOff, Stethoscope } from "lucide-react";
 import Swal from "sweetalert2";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -77,6 +77,13 @@ export default function Home() {
 
       {/* Card */}
       <div className="relative z-10 w-full max-w-md bg-white/95 p-8 sm:p-10 rounded-3xl shadow-2xl border border-gray-200">
+        {/* Logo */}
+        <div className="flex items-center justify-center gap-2 mb-6">
+          <Stethoscope className="w-8 h-8 text-cyan-500" />
+          <span className="text-2xl font-bold text-gray-900">Schedula</span>
+          <span className="text-xs text-cyan-500 font-medium bg-cyan-50 px-2 py-0.5 rounded-full">Healthcare</span>
+        </div>
+
         <h2 className="text-2xl font-bold text-gray-900 mb-4">Login</h2>
 
         {/* Demo Credentials */}
