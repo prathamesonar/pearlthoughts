@@ -193,7 +193,7 @@ export default function DashboardLayout({
                             </div>
                         </div>
 
-                        {/* Right side: user avatar */}
+                        {/* Right side: user avatar + logout */}
                         <div className="flex items-center gap-3">
                             <div className="hidden sm:block text-right">
                                 <p className="text-sm font-semibold text-gray-900">
@@ -206,6 +206,13 @@ export default function DashboardLayout({
                             <div className="w-10 h-10 rounded-full bg-gradient-to-br from-cyan-400 to-teal-500 flex items-center justify-center text-white font-bold text-sm shadow-md">
                                 {user.name.charAt(0)}
                             </div>
+                            <button
+                                onClick={handleLogout}
+                                title="Logout"
+                                className="p-2 rounded-xl hover:bg-red-50 text-gray-400 hover:text-red-500 transition cursor-pointer"
+                            >
+                                <LogOut className="w-5 h-5" />
+                            </button>
                         </div>
                     </div>
                 </header>

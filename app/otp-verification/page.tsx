@@ -1,9 +1,9 @@
 "use client";
 
-import { useState, useEffect, Suspense } from "react";
+import { useState, Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import Swal from "sweetalert2";
-import { registerUser } from "../lib/data";
+import { registerUser, loginUser } from "../lib/data";
 import type { User } from "../lib/data";
 
 function OTPContent() {
@@ -11,39 +11,60 @@ function OTPContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const phone = searchParams.get("phone");
+  const flow = searchParams.get("flow"); // "login" or null (signup)
 
   const correctOTP = "123456"; // Simulated OTP
 
   const handleVerify = (e: React.FormEvent) => {
     e.preventDefault();
     if (otp === correctOTP) {
-      // Retrieve pending user data from sessionStorage and register
-      const pendingRaw = sessionStorage.getItem("schedula_pending_user");
-      if (pendingRaw) {
-        const pendingUser: User = JSON.parse(pendingRaw);
-        const success = registerUser(pendingUser);
-        if (!success) {
-          Swal.fire({
-            icon: "warning",
-            title: "Email Already Exists",
-            text: "An account with this email already exists. Please login instead.",
-            confirmButtonColor: "#22d3ee",
-          }).then(() => {
-            router.push("/");
-          });
-          return;
+      if (flow === "login") {
+        // Login flow: user is already authenticated in localStorage, go to dashboard
+        const pendingRaw = sessionStorage.getItem("schedula_login_pending");
+        if (pendingRaw) {
+          const user: User = JSON.parse(pendingRaw);
+          // Re-set as current user
+          localStorage.setItem("schedula_current_user", JSON.stringify(user));
+          sessionStorage.removeItem("schedula_login_pending");
         }
-        sessionStorage.removeItem("schedula_pending_user");
-      }
+        Swal.fire({
+          icon: "success",
+          title: "Welcome Back!",
+          text: "OTP verified successfully.",
+          timer: 1500,
+          showConfirmButton: false,
+        }).then(() => {
+          router.push("/dashboard");
+        });
+      } else {
+        // Signup flow: register the pending user
+        const pendingRaw = sessionStorage.getItem("schedula_pending_user");
+        if (pendingRaw) {
+          const pendingUser: User = JSON.parse(pendingRaw);
+          const success = registerUser(pendingUser);
+          if (!success) {
+            Swal.fire({
+              icon: "warning",
+              title: "Email Already Exists",
+              text: "An account with this email already exists. Please login instead.",
+              confirmButtonColor: "#22d3ee",
+            }).then(() => {
+              router.push("/");
+            });
+            return;
+          }
+          sessionStorage.removeItem("schedula_pending_user");
+        }
 
-      Swal.fire({
-        icon: "success",
-        title: "Account Created!",
-        text: `Your account for ${phone} has been successfully created.`,
-        confirmButtonColor: "#22d3ee",
-      }).then(() => {
-        router.push("/");
-      });
+        Swal.fire({
+          icon: "success",
+          title: "Account Created!",
+          text: `Your account for ${phone} has been successfully created.`,
+          confirmButtonColor: "#22d3ee",
+        }).then(() => {
+          router.push("/");
+        });
+      }
     } else {
       Swal.fire({
         icon: "error",

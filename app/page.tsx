@@ -37,14 +37,16 @@ export default function Home() {
 
     const user = loginUser(email, password);
     if (user) {
+      // Store login intent and go to OTP verification
+      sessionStorage.setItem("schedula_login_pending", JSON.stringify(user));
       Swal.fire({
-        icon: "success",
-        title: "Welcome Back!",
-        text: `Hello, ${user.name}!`,
+        icon: "info",
+        title: "OTP Sent!",
+        text: `A verification code has been sent to ${user.phone}.`,
         timer: 1500,
         showConfirmButton: false,
       }).then(() => {
-        router.push("/dashboard");
+        router.push(`/otp-verification?phone=${user.phone}&flow=login`);
       });
     } else {
       Swal.fire({
