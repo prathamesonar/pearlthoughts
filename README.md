@@ -1,4 +1,4 @@
-# 🩺 Schedula Healthcare — Appointment Booking Platform
+#  Appointment Booking Platform
 
 A full-featured healthcare appointment booking platform built with **Next.js**, **TypeScript**, and **Tailwind CSS**. It features a complete authentication flow with OTP verification, doctor discovery, appointment booking, medical records management, and a responsive dashboard.
 
