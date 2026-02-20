@@ -10,6 +10,7 @@ interface Appointment {
     id: string;
     doctorName: string;
     specialty: string;
+    userEmail: string;
     date: string;
     status: string;
 }
