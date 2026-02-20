@@ -1,15 +1,25 @@
-# Modern Login UI
+# 🩺 Schedula Healthcare — Appointment Booking Platform
 
-This is a modern, responsive, and professional Login UI built with Next.js and Tailwind CSS. It features a clean design inspired by modern mobile app aesthetics (Cyan theme), with integrated social login buttons and validation.
+A full-featured healthcare appointment booking platform built with **Next.js**, **TypeScript**, and **Tailwind CSS**. It features a complete authentication flow with OTP verification, doctor discovery, appointment booking, medical records management, and a responsive dashboard.
 
 ---
 
 ##  Live Demo
 
-* **Frontend (Vercel):** [https://pearlthoughts-loginpage.vercel.app/](https://pearlthoughts-loginpage.vercel.app/)
+**Deployed on Vercel:** [https://pearlthoughts-loginpage.vercel.app/](https://pearlthoughts-loginpage.vercel.app/)
+
 ---
 
+### Demo Credentials
 
+| Field    | Value         |
+| -------- | ------------- |
+| Email    | `demo@gmail.com` |
+| Password | `Demo@123`    |
+| OTP      | `123456`      |
+---
+
+### login Page
 | login Page                                | 
 | ---------------------------------------------------- | 
 | ![login Page](https://github.com/user-attachments/assets/716cc4bb-97ee-42e2-b74e-f99e369139ce) 
@@ -41,29 +51,48 @@ This is a modern, responsive, and professional Login UI built with Next.js and T
 
 ### Installation
 
-1.  Clone the repository:
-    ```bash
-    git clone https://github.com/prathamesonar/pearlthoughts.git
-    cd pearlthoughts
-    ```
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/prathamesonar/pearlthoughts.git
+   cd pearlthoughts
+   ```
 
-2.  Install dependencies:
-    ```bash
-    npm install
-    ```
+2. Install dependencies:
+   ```bash
+   npm install
+   ```
 
-3.  Run the development server:
-    ```bash
-    npm run dev
-    ```
+3. Run the development server:
+   ```bash
+   npm run dev
+   ```
 
-4.  Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+4. Open [http://localhost:3000](http://localhost:3000) in your browser.
 
+---
 
-## 📂 Project Structure
+##  Authentication Flow
 
-- `app/page.tsx`: The main login page component.
-- `app/globals.css`: Global styles and Tailwind directives.
-- `public/`: Static assets.
+```
+Login Page (email + password)
+    │
+    ▼ (credentials validated, no session set)
+OTP Verification (6-digit code)
+    │
+    ▼ (session created ONLY after correct OTP)
+Dashboard
+```
 
+- OTP is required **every time** a user logs in — not just the first time.
+- Session is stored in `localStorage` as `schedula_current_user`.
+- Dashboard has an **auth guard** — unauthenticated users are redirected to login.
 
+---
+
+##  Responsive Design
+
+- **Desktop**: Sidebar navigation with full labels
+- **Mobile**: Bottom tab navigation bar with icons
+- All pages are fully responsive and mobile-friendly
+
+---
