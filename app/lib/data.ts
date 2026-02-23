@@ -197,11 +197,11 @@ export const doctors: Doctor[] = [
 ];
 
 export const defaultUser: User = {
-    name: "Priya Sharma",
+    name: "Demo user",
     email: "demo@gmail.com",
     phone: "9876543210",
     password: "Demo@123",
-    location: "Dombivali, Mumbai",
+    location: "Dadar, Mumbai",
 };
 
 export function seedDefaultUser() {
