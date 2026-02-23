@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useRef, Suspense } from "react";
+import { useState, useRef, useEffect, Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { Stethoscope } from "lucide-react";
 import Swal from "sweetalert2";
@@ -16,6 +16,21 @@ function OTPContent() {
   const flow = searchParams.get("flow"); // "login" or null (signup)
 
   const correctOTP = "123456";
+  const [timer, setTimer] = useState(60);
+
+  useEffect(() => {
+    if (timer <= 0) return;
+    const interval = setInterval(() => {
+      setTimer((prev) => prev - 1);
+    }, 1000);
+    return () => clearInterval(interval);
+  }, [timer]);
+
+  const handleResend = () => {
+    setTimer(60);
+    setDigits(["", "", "", "", "", ""]);
+    inputRefs.current[0]?.focus();
+  };
 
   const handleChange = (index: number, value: string) => {
     if (!/^\d*$/.test(value)) return; // digits only
@@ -182,12 +197,23 @@ function OTPContent() {
           </button>
         </form>
 
-        <p className="text-center text-gray-500 text-sm mt-6">
-          Didn&apos;t receive code?{" "}
-          <button className="font-bold text-cyan-500 hover:text-cyan-600 hover:underline transition-colors bg-transparent border-none cursor-pointer">
-            Resend
-          </button>
-        </p>
+        <div className="text-center mt-6">
+          {timer > 0 ? (
+            <p className="text-gray-500 text-sm">
+              Resend code in <span className="font-bold text-cyan-500">{timer}s</span>
+            </p>
+          ) : (
+            <p className="text-gray-500 text-sm">
+              Didn&apos;t receive code?{" "}
+              <button
+                onClick={handleResend}
+                className="font-bold text-cyan-500 hover:text-cyan-600 hover:underline transition-colors bg-transparent border-none cursor-pointer"
+              >
+                Resend
+              </button>
+            </p>
+          )}
+        </div>
       </div>
     </div>
   );
