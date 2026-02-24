@@ -12,6 +12,7 @@ interface Appointment {
     specialty: string;
     userEmail: string;
     date: string;
+    timeSlot: string;
     status: string;
 }
 
@@ -90,6 +91,9 @@ export default function AppointmentsPage() {
                                         {new Date(apt.date).toLocaleDateString("en-IN", {
                                             weekday: "short", day: "numeric", month: "short", year: "numeric",
                                         })}
+                                        {apt.timeSlot && (
+                                            <span className="ml-2 text-cyan-500 font-medium">• {apt.timeSlot}</span>
+                                        )}
                                     </div>
                                 </div>
                                 <button
