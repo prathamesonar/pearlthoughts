@@ -53,8 +53,24 @@ export default function DoctorDetailPage({
     const [mounted, setMounted] = useState(false);
     const [selectedDate, setSelectedDate] = useState<number>(0);
     const [selectedSlot, setSelectedSlot] = useState<string>("");
+    const [bookedSlots, setBookedSlots] = useState<string[]>([]);
 
     const weekdays = getNextWeekdays(5);
+
+    const getBookedSlots = (doctorId: string, date: Date): string[] => {
+        const raw = localStorage.getItem("schedula_appointments");
+        if (!raw) return [];
+        const all = JSON.parse(raw);
+        const dateStr = date.toISOString().split("T")[0];
+        return all
+            .filter((a: { doctorId: string; date: string; timeSlot?: string; status: string }) =>
+                a.doctorId === doctorId &&
+                a.date.split("T")[0] === dateStr &&
+                a.status === "upcoming" &&
+                a.timeSlot
+            )
+            .map((a: { timeSlot: string }) => a.timeSlot);
+    };
 
     useEffect(() => {
         const u = getLoggedInUser();
@@ -70,6 +86,19 @@ export default function DoctorDetailPage({
         setDoctor(found);
         setMounted(true);
     }, [id, router]);
+
+    // Update booked slots when date or doctor changes
+    useEffect(() => {
+        if (!doctor) return;
+        const chosenDate = weekdays[selectedDate]?.date;
+        if (!chosenDate) return;
+        const booked = getBookedSlots(doctor.id, chosenDate);
+        setBookedSlots(booked);
+        // If the currently selected slot is now booked, deselect it
+        if (selectedSlot && booked.includes(selectedSlot)) {
+            setSelectedSlot("");
+        }
+    }, [selectedDate, doctor, mounted]);
 
     const handleBookAppointment = () => {
         const user = getLoggedInUser();
@@ -110,6 +139,11 @@ export default function DoctorDetailPage({
             "schedula_appointments",
             JSON.stringify(appointments)
         );
+
+        // Refresh booked slots immediately so the UI shows the slot as booked
+        const updatedBooked = getBookedSlots(doctor.id, chosenDate);
+        setBookedSlots(updatedBooked);
+        setSelectedSlot("");
 
         Swal.fire({
             icon: "success",
@@ -265,19 +299,28 @@ export default function DoctorDetailPage({
                 <div>
                     <h3 className="text-base font-bold text-gray-900 mb-4">Select Time Slot</h3>
                     <div className="grid grid-cols-2 gap-3">
-                        {TIME_SLOTS.map((slot) => (
-                            <button
-                                key={slot}
-                                onClick={() => setSelectedSlot(slot)}
-                                className={`py-3 px-4 rounded-xl border-2 text-sm font-medium transition-all duration-200 cursor-pointer
-                                    ${selectedSlot === slot
-                                        ? "bg-cyan-500 border-cyan-500 text-white shadow-lg shadow-cyan-200"
-                                        : "bg-white border-gray-200 text-gray-600 hover:border-cyan-300"
-                                    }`}
-                            >
-                                {slot}
-                            </button>
-                        ))}
+                        {TIME_SLOTS.map((slot) => {
+                            const isBooked = bookedSlots.includes(slot);
+                            return (
+                                <button
+                                    key={slot}
+                                    onClick={() => !isBooked && setSelectedSlot(slot)}
+                                    disabled={isBooked}
+                                    className={`py-3 px-4 rounded-xl border-2 text-sm font-medium transition-all duration-200 relative
+                                        ${isBooked
+                                            ? "bg-red-50 border-red-200 text-red-300 cursor-not-allowed opacity-70"
+                                            : selectedSlot === slot
+                                                ? "bg-cyan-500 border-cyan-500 text-white shadow-lg shadow-cyan-200 cursor-pointer"
+                                                : "bg-white border-gray-200 text-gray-600 hover:border-cyan-300 cursor-pointer"
+                                        }`}
+                                >
+                                    {slot}
+                                    {isBooked && (
+                                        <span className="block text-[10px] text-red-400 font-bold mt-0.5">Booked</span>
+                                    )}
+                                </button>
+                            );
+                        })}
                     </div>
                 </div>
 
