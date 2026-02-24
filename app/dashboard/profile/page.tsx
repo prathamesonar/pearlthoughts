@@ -14,7 +14,7 @@ export default function ProfilePage() {
 
     useEffect(() => {
         const u = getLoggedInUser();
-        if (!u) { router.push("/"); return; }
+        if (!u) { router.push("/login"); return; }
         setUser(u);
         setMounted(true);
     }, [router]);
@@ -30,7 +30,7 @@ export default function ProfilePage() {
         }).then((result) => {
             if (result.isConfirmed) {
                 logoutUser();
-                router.push("/");
+                router.push("/login");
             }
         });
     };

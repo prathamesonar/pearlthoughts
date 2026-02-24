@@ -16,7 +16,7 @@ export default function DashboardPage() {
     useEffect(() => {
         const u = getLoggedInUser();
         if (!u) {
-            router.push("/");
+            router.push("/login");
             return;
         }
         setUser(u);
@@ -162,8 +162,8 @@ export default function DashboardPage() {
                                     >
                                         <Heart
                                             className={`w-5 h-5 transition-colors ${favorites.includes(doctor.id)
-                                                    ? "fill-red-500 text-red-500"
-                                                    : "text-gray-300"
+                                                ? "fill-red-500 text-red-500"
+                                                : "text-gray-300"
                                                 }`}
                                         />
                                     </button>
@@ -172,8 +172,8 @@ export default function DashboardPage() {
                                 {/* Availability Badge */}
                                 <span
                                     className={`inline-block mt-1.5 px-2.5 py-0.5 rounded-full text-xs font-medium ${doctor.availability === "Available today"
-                                            ? "bg-emerald-50 text-emerald-600"
-                                            : "bg-amber-50 text-amber-600"
+                                        ? "bg-emerald-50 text-emerald-600"
+                                        : "bg-amber-50 text-amber-600"
                                         }`}
                                 >
                                     {doctor.availability}

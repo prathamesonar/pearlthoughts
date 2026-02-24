@@ -20,7 +20,7 @@ export default function RecordsPage() {
 
     useEffect(() => {
         const u = getLoggedInUser();
-        if (!u) { router.push("/"); return; }
+        if (!u) { router.push("/login"); return; }
 
         const raw = localStorage.getItem("schedula_records");
         if (raw) setRecords(JSON.parse(raw));

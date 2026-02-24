@@ -105,7 +105,7 @@ function OTPContent() {
               text: "An account with this email already exists. Please login instead.",
               confirmButtonColor: "#22d3ee",
             }).then(() => {
-              router.push("/");
+              router.push("/login");
             });
             return;
           }
@@ -118,7 +118,7 @@ function OTPContent() {
           text: "Your account has been successfully created.",
           confirmButtonColor: "#22d3ee",
         }).then(() => {
-          router.push("/");
+          router.push("/login");
         });
       }
     } else {

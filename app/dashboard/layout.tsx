@@ -38,7 +38,7 @@ export default function DashboardLayout({
         seedDefaultUser();
         const u = getLoggedInUser();
         if (!u) {
-            router.push("/");
+            router.push("/login");
             return;
         }
         setUser(u);
@@ -47,7 +47,7 @@ export default function DashboardLayout({
 
     const handleLogout = () => {
         logoutUser();
-        router.push("/");
+        router.push("/login");
     };
 
     const getGreeting = () => {

@@ -59,7 +59,7 @@ export default function DoctorDetailPage({
     useEffect(() => {
         const u = getLoggedInUser();
         if (!u) {
-            router.push("/");
+            router.push("/login");
             return;
         }
         const found = doctors.find((d) => d.id === id);

@@ -23,7 +23,7 @@ export default function AppointmentsPage() {
 
     useEffect(() => {
         const u = getLoggedInUser();
-        if (!u) { router.push("/"); return; }
+        if (!u) { router.push("/login"); return; }
 
         const raw = localStorage.getItem("schedula_appointments");
         if (raw) {
