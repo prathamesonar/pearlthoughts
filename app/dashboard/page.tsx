@@ -57,28 +57,28 @@ export default function DashboardPage() {
     return (
         <div className="max-w-5xl mx-auto space-y-6">
             {/* Welcome Card */}
-            <div className="bg-gradient-to-r from-cyan-500 to-teal-500 rounded-2xl p-6 md:p-8 text-white shadow-lg">
-                <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+            <div className="bg-gradient-to-r from-cyan-500 to-teal-500 rounded-2xl p-4 sm:p-6 text-white shadow-lg">
+                <div className="flex items-center justify-between gap-2 sm:gap-4">
                     <div>
-                        <p className="text-cyan-100 text-sm font-medium">
+                        <p className="text-cyan-100 text-xs sm:text-sm font-medium">
                             {getGreeting()},
                         </p>
-                        <h2 className="text-2xl md:text-3xl font-bold mt-1">
+                        <h2 className="text-xl sm:text-2xl md:text-3xl font-bold mt-0.5 sm:mt-1">
                             Hello, {firstName}! 👋
                         </h2>
-                        <p className="text-cyan-100 text-sm mt-2 flex items-center gap-1">
-                            <MapPin className="w-4 h-4" />
+                        <p className="text-cyan-100 text-xs sm:text-sm mt-1.5 sm:mt-2 flex items-center gap-1">
+                            <MapPin className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
                             {user.location}
                         </p>
                     </div>
-                    <div className="flex gap-4">
-                        <div className="bg-white/20 backdrop-blur-sm rounded-xl px-4 py-3 text-center">
-                            <p className="text-2xl font-bold">{doctors.length}</p>
-                            <p className="text-xs text-cyan-100">Doctors</p>
+                    <div className="flex gap-2 sm:gap-4">
+                        <div className="bg-white/20 backdrop-blur-sm rounded-xl px-3 py-2 sm:px-4 sm:py-3 text-center">
+                            <p className="text-xl sm:text-2xl font-bold">{doctors.length}</p>
+                            <p className="text-[10px] sm:text-xs text-cyan-100">Doctors</p>
                         </div>
-                        <div className="bg-white/20 backdrop-blur-sm rounded-xl px-4 py-3 text-center">
-                            <p className="text-2xl font-bold">8+</p>
-                            <p className="text-xs text-cyan-100">Specialties</p>
+                        <div className="bg-white/20 backdrop-blur-sm rounded-xl px-3 py-2 sm:px-4 sm:py-3 text-center">
+                            <p className="text-xl sm:text-2xl font-bold">8+</p>
+                            <p className="text-[10px] sm:text-xs text-cyan-100">Specialties</p>
                         </div>
                     </div>
                 </div>

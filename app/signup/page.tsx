@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Eye, EyeOff, Stethoscope } from "lucide-react";
+import { Eye, EyeOff, Stethoscope, ArrowLeft } from "lucide-react";
 import { useRouter } from "next/navigation";
 import Swal from "sweetalert2";
 import Link from "next/link";
@@ -72,7 +72,16 @@ export default function SignupPage() {
       </div>
 
       {/* Signup Card */}
-      <div className="relative w-full max-w-md p-8 sm:p-10 rounded-3xl bg-white/95 backdrop-blur-sm shadow-2xl border border-white/50 z-10">
+      <div className="relative w-full max-w-md p-6 sm:p-8 md:p-10 rounded-3xl bg-white/95 backdrop-blur-sm shadow-2xl border border-white/50 z-10 my-8">
+        {/* Back to Home */}
+        <Link
+          href="/"
+          className="inline-flex items-center gap-1.5 text-sm text-gray-500 hover:text-cyan-600 transition-colors mb-5 group"
+        >
+          <ArrowLeft className="w-4 h-4 group-hover:-translate-x-0.5 transition-transform" />
+          Back to Home
+        </Link>
+
         {/* Logo */}
         <div className="flex items-center justify-center gap-2 mb-6">
           <Stethoscope className="w-8 h-8 text-cyan-500" />

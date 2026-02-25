@@ -84,7 +84,10 @@ export default function AppointmentsPage() {
                         <div key={apt.id} className="bg-white rounded-2xl border border-gray-100 p-5 shadow-sm">
                             <div className="flex items-start justify-between">
                                 <div>
-                                    <h3 className="font-bold text-gray-900">{apt.doctorName}</h3>
+                                    <div className="flex flex-wrap items-center gap-2 mb-1">
+                                        <h3 className="font-bold text-gray-900">{apt.doctorName}</h3>
+                                        <span className="bg-emerald-100 text-emerald-600 text-[10px] font-bold px-2 py-0.5 rounded-full uppercase tracking-wider">Booked</span>
+                                    </div>
                                     <p className="text-cyan-500 text-sm font-medium">{apt.specialty}</p>
                                     <div className="flex items-center gap-1.5 mt-2 text-gray-400 text-xs">
                                         <Clock className="w-3.5 h-3.5" />

@@ -157,7 +157,7 @@ export default function RecordsPage() {
                 </div>
                 <button
                     onClick={addRecord}
-                    className="flex items-center gap-2 px-5 py-2.5 bg-gradient-to-r from-cyan-500 to-teal-500 text-white rounded-xl text-sm font-bold hover:shadow-lg hover:-translate-y-0.5 transition-all duration-200 cursor-pointer shadow-md shadow-cyan-200"
+                    className="flex justify-center flex-shrink-0 items-center gap-2 px-5 py-2.5 bg-gradient-to-r from-cyan-500 to-teal-500 text-white rounded-xl text-sm font-bold hover:shadow-lg hover:-translate-y-0.5 transition-all duration-200 cursor-pointer shadow-md shadow-cyan-200 w-[180px] sm:w-auto mx-auto sm:mx-0"
                 >
                     <Upload className="w-4 h-4" />
                     Add Record
@@ -165,7 +165,7 @@ export default function RecordsPage() {
             </div>
 
             {/* Search & Filter */}
-            <div className="flex flex-col sm:flex-row gap-3">
+            <div className="flex flex-row gap-2 sm:gap-3">
                 <div className="relative flex-1">
                     <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
                     <input
@@ -176,12 +176,12 @@ export default function RecordsPage() {
                         className="w-full pl-10 pr-4 py-3 rounded-xl border border-gray-200 bg-white text-sm text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:border-cyan-500 transition shadow-sm"
                     />
                 </div>
-                <div className="relative">
+                <div className="relative w-[130px] sm:w-[180px]">
                     <Filter className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
                     <select
                         value={filterType}
                         onChange={(e) => setFilterType(e.target.value)}
-                        className="pl-10 pr-8 py-3 rounded-xl border border-gray-200 bg-white text-sm text-gray-700 focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:border-cyan-500 transition shadow-sm appearance-none cursor-pointer min-w-[180px]"
+                        className="w-full pl-8 sm:pl-10 pr-6 sm:pr-8 py-3 rounded-xl border border-gray-200 bg-white text-xs sm:text-sm text-gray-700 focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:border-cyan-500 transition shadow-sm appearance-none cursor-pointer"
                     >
                         <option value="All">All Types</option>
                         {RECORD_TYPES.map((t) => (

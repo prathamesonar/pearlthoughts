@@ -124,7 +124,7 @@ export const doctors: Doctor[] = [
         about:
             "Dedicated pediatrician with 12+ years of experience in child healthcare, vaccinations, and developmental assessments.",
         imageUrl:
-            "https://images.unsplash.com/photo-1594824476967-48c8b964ac31?auto=format&fit=crop&q=80&w=300",
+            "https://images.unsplash.com/photo-1614608682850-e0d6ed316d47?auto=format&fit=crop&q=80&w=300",
         services: [
             { service: "Service", value: "Child Care" },
             { service: "Specialization", value: "Pediatrics" },
