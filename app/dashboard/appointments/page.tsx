@@ -19,6 +19,7 @@ interface Appointment {
 export default function AppointmentsPage() {
     const router = useRouter();
     const [appointments, setAppointments] = useState<Appointment[]>([]);
+    const [filter, setFilter] = useState<'Booked' | 'Cancelled'>('Booked');
     const [mounted, setMounted] = useState(false);
 
     useEffect(() => {
@@ -46,9 +47,9 @@ export default function AppointmentsPage() {
             if (result.isConfirmed) {
                 const raw = localStorage.getItem("schedula_appointments");
                 if (raw) {
-                    const all = JSON.parse(raw).filter((a: Appointment) => a.id !== id);
+                    const all = JSON.parse(raw).map((a: Appointment) => a.id === id ? { ...a, status: 'Cancelled' } : a);
                     localStorage.setItem("schedula_appointments", JSON.stringify(all));
-                    setAppointments((prev) => prev.filter((a) => a.id !== id));
+                    setAppointments((prev) => prev.map((a) => a.id === id ? { ...a, status: 'Cancelled' } : a));
                 }
                 Swal.fire({ icon: "success", title: "Cancelled!", timer: 1200, showConfirmButton: false });
             }
@@ -57,57 +58,98 @@ export default function AppointmentsPage() {
 
     if (!mounted) return null;
 
+    const filteredAppointments = appointments.filter((a) => (a.status || 'Booked') === filter);
+
     return (
         <div className="max-w-3xl mx-auto space-y-6">
-            <div className="flex items-center justify-between">
-                <h2 className="text-xl font-bold text-gray-900">Your Appointments</h2>
-                <span className="bg-cyan-50 text-cyan-600 px-3 py-1 rounded-full text-sm font-medium">
-                    {appointments.length} total
-                </span>
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                <div>
+                    <h2 className="text-xl font-bold text-gray-900">Your Appointments</h2>
+                    <p className="text-gray-500 text-sm mt-1">Manage your booking history</p>
+                </div>
+
+                {/* Tabs */}
+                <div className="flex bg-gray-100 p-1 rounded-xl w-fit">
+                    <button
+                        onClick={() => setFilter('Booked')}
+                        className={`px-4 py-1.5 text-sm font-medium rounded-lg transition-all ${filter === 'Booked'
+                                ? 'bg-white text-cyan-600 shadow-sm'
+                                : 'text-gray-500 hover:text-gray-700'
+                            }`}
+                    >
+                        Booked
+                    </button>
+                    <button
+                        onClick={() => setFilter('Cancelled')}
+                        className={`px-4 py-1.5 text-sm font-medium rounded-lg transition-all ${filter === 'Cancelled'
+                                ? 'bg-white text-gray-900 shadow-sm'
+                                : 'text-gray-500 hover:text-gray-700'
+                            }`}
+                    >
+                        Cancelled
+                    </button>
+                </div>
             </div>
 
-            {appointments.length === 0 ? (
-                <div className="text-center py-20">
+            {filteredAppointments.length === 0 ? (
+                <div className="text-center py-20 bg-white rounded-3xl border border-gray-100 shadow-sm">
                     <Calendar className="w-16 h-16 text-gray-200 mx-auto mb-4" />
-                    <p className="text-gray-500 font-medium text-lg">No appointments yet</p>
-                    <p className="text-gray-400 text-sm mt-1">Book a doctor from the Find a Doctor page</p>
-                    <button
-                        onClick={() => router.push("/dashboard")}
-                        className="mt-6 px-6 py-2.5 bg-cyan-500 text-white rounded-xl font-medium hover:bg-cyan-600 transition cursor-pointer"
-                    >
-                        Find a Doctor
-                    </button>
+                    <p className="text-gray-500 font-medium text-lg">
+                        {filter === 'Booked' ? 'No booked appointments yet' : 'No cancelled appointments'}
+                    </p>
+                    {filter === 'Booked' && (
+                        <>
+                            <p className="text-gray-400 text-sm mt-1">Book a doctor from the Find a Doctor page</p>
+                            <button
+                                onClick={() => router.push("/dashboard")}
+                                className="mt-6 px-6 py-2.5 bg-cyan-500 text-white rounded-xl font-medium hover:bg-cyan-600 transition cursor-pointer"
+                            >
+                                Find a Doctor
+                            </button>
+                        </>
+                    )}
                 </div>
             ) : (
                 <div className="grid gap-4">
-                    {appointments.map((apt) => (
-                        <div key={apt.id} className="bg-white rounded-2xl border border-gray-100 p-5 shadow-sm">
-                            <div className="flex items-start justify-between">
-                                <div>
-                                    <div className="flex flex-wrap items-center gap-2 mb-1">
-                                        <h3 className="font-bold text-gray-900">{apt.doctorName}</h3>
-                                        <span className="bg-emerald-100 text-emerald-600 text-[10px] font-bold px-2 py-0.5 rounded-full uppercase tracking-wider">Booked</span>
+                    {filteredAppointments.map((apt) => {
+                        const isCancelled = (apt.status || 'Booked') === 'Cancelled';
+                        return (
+                            <div key={apt.id} className={`bg-white rounded-2xl border border-gray-100 p-5 shadow-sm ${isCancelled ? 'opacity-75' : ''}`}>
+                                <div className="flex items-start justify-between">
+                                    <div>
+                                        <div className="flex flex-wrap items-center gap-2 mb-1">
+                                            <h3 className={`font-bold ${isCancelled ? 'text-gray-600 line-through decoration-gray-300' : 'text-gray-900'}`}>{apt.doctorName}</h3>
+                                            <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full uppercase tracking-wider ${isCancelled
+                                                    ? 'bg-red-50 text-red-600'
+                                                    : 'bg-emerald-100 text-emerald-600'
+                                                }`}>
+                                                {isCancelled ? 'Cancelled' : 'Booked'}
+                                            </span>
+                                        </div>
+                                        <p className="text-cyan-500 text-sm font-medium">{apt.specialty}</p>
+                                        <div className="flex items-center gap-1.5 mt-2 text-gray-400 text-xs">
+                                            <Clock className="w-3.5 h-3.5" />
+                                            {new Date(apt.date).toLocaleDateString("en-IN", {
+                                                weekday: "short", day: "numeric", month: "short", year: "numeric",
+                                            })}
+                                            {apt.timeSlot && (
+                                                <span className="ml-2 text-cyan-500 font-medium">• {apt.timeSlot}</span>
+                                            )}
+                                        </div>
                                     </div>
-                                    <p className="text-cyan-500 text-sm font-medium">{apt.specialty}</p>
-                                    <div className="flex items-center gap-1.5 mt-2 text-gray-400 text-xs">
-                                        <Clock className="w-3.5 h-3.5" />
-                                        {new Date(apt.date).toLocaleDateString("en-IN", {
-                                            weekday: "short", day: "numeric", month: "short", year: "numeric",
-                                        })}
-                                        {apt.timeSlot && (
-                                            <span className="ml-2 text-cyan-500 font-medium">• {apt.timeSlot}</span>
-                                        )}
-                                    </div>
+                                    {!isCancelled && (
+                                        <button
+                                            onClick={() => cancelAppointment(apt.id)}
+                                            className="p-2 rounded-xl hover:bg-red-50 text-gray-400 hover:text-red-500 transition cursor-pointer"
+                                            title="Cancel Appointment"
+                                        >
+                                            <Trash2 className="w-4 h-4" />
+                                        </button>
+                                    )}
                                 </div>
-                                <button
-                                    onClick={() => cancelAppointment(apt.id)}
-                                    className="p-2 rounded-xl hover:bg-red-50 text-gray-400 hover:text-red-500 transition cursor-pointer"
-                                >
-                                    <Trash2 className="w-4 h-4" />
-                                </button>
                             </div>
-                        </div>
-                    ))}
+                        )
+                    })}
                 </div>
             )}
         </div>
