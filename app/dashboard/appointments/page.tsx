@@ -58,7 +58,7 @@ export default function AppointmentsPage() {
 
     if (!mounted) return null;
 
-    const filteredAppointments = appointments.filter((a) => (a.status || 'Booked') === filter);
+    const filteredAppointments = appointments.filter((a) => filter === 'Booked' ? a.status !== 'Cancelled' : a.status === 'Cancelled');
 
     return (
         <div className="max-w-3xl mx-auto space-y-6">
@@ -73,8 +73,8 @@ export default function AppointmentsPage() {
                     <button
                         onClick={() => setFilter('Booked')}
                         className={`px-4 py-1.5 text-sm font-medium rounded-lg transition-all ${filter === 'Booked'
-                                ? 'bg-white text-cyan-600 shadow-sm'
-                                : 'text-gray-500 hover:text-gray-700'
+                            ? 'bg-white text-cyan-600 shadow-sm'
+                            : 'text-gray-500 hover:text-gray-700'
                             }`}
                     >
                         Booked
@@ -82,8 +82,8 @@ export default function AppointmentsPage() {
                     <button
                         onClick={() => setFilter('Cancelled')}
                         className={`px-4 py-1.5 text-sm font-medium rounded-lg transition-all ${filter === 'Cancelled'
-                                ? 'bg-white text-gray-900 shadow-sm'
-                                : 'text-gray-500 hover:text-gray-700'
+                            ? 'bg-white text-gray-900 shadow-sm'
+                            : 'text-gray-500 hover:text-gray-700'
                             }`}
                     >
                         Cancelled
@@ -112,7 +112,7 @@ export default function AppointmentsPage() {
             ) : (
                 <div className="grid gap-4">
                     {filteredAppointments.map((apt) => {
-                        const isCancelled = (apt.status || 'Booked') === 'Cancelled';
+                        const isCancelled = apt.status === 'Cancelled';
                         return (
                             <div key={apt.id} className={`bg-white rounded-2xl border border-gray-100 p-5 shadow-sm ${isCancelled ? 'opacity-75' : ''}`}>
                                 <div className="flex items-start justify-between">
@@ -120,8 +120,8 @@ export default function AppointmentsPage() {
                                         <div className="flex flex-wrap items-center gap-2 mb-1">
                                             <h3 className={`font-bold ${isCancelled ? 'text-gray-600 line-through decoration-gray-300' : 'text-gray-900'}`}>{apt.doctorName}</h3>
                                             <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full uppercase tracking-wider ${isCancelled
-                                                    ? 'bg-red-50 text-red-600'
-                                                    : 'bg-emerald-100 text-emerald-600'
+                                                ? 'bg-red-50 text-red-600'
+                                                : 'bg-emerald-100 text-emerald-600'
                                                 }`}>
                                                 {isCancelled ? 'Cancelled' : 'Booked'}
                                             </span>
