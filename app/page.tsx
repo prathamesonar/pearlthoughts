@@ -18,24 +18,24 @@ export default function HomePage() {
         <div className="max-w-6xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">
           {/* Logo */}
           <div className="flex items-center gap-2">
-            <Stethoscope className="w-7 h-7 text-cyan-500" />
-            <span className="text-xl font-bold text-gray-900">Schedula</span>
+            <Stethoscope className="w-6 h-6 sm:w-7 sm:h-7 text-cyan-500" />
+            <span className="text-lg sm:text-xl font-bold text-gray-900">Schedula</span>
             <span className="text-[10px] text-cyan-500 font-medium bg-cyan-50 px-1.5 py-0.5 rounded-full hidden sm:inline">
               Healthcare
             </span>
           </div>
 
           {/* Nav Links */}
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-2 sm:gap-3">
             <Link
               href="/login"
-              className="px-5 py-2 text-sm font-medium text-gray-700 hover:text-cyan-600 transition-colors"
+              className="px-3 sm:px-5 py-2 text-sm font-medium text-gray-700 hover:text-cyan-600 transition-colors"
             >
               Login
             </Link>
             <Link
               href="/signup"
-              className="px-5 py-2.5 text-sm font-bold text-white bg-cyan-500 rounded-xl hover:bg-cyan-600 hover:-translate-y-0.5 transition-all duration-200 shadow-md shadow-cyan-200"
+              className="px-3 sm:px-5 py-2.5 text-sm font-bold text-white bg-cyan-500 rounded-xl hover:bg-cyan-600 hover:-translate-y-0.5 transition-all duration-200 shadow-md shadow-cyan-200"
             >
               Sign Up
             </Link>
@@ -46,61 +46,61 @@ export default function HomePage() {
       {/* ========== HERO ========== */}
       <section className="relative overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-br from-cyan-50 via-white to-teal-50"></div>
-        <div className="absolute top-20 right-0 w-96 h-96 bg-cyan-200/20 rounded-full blur-3xl"></div>
-        <div className="absolute bottom-0 left-0 w-72 h-72 bg-teal-200/20 rounded-full blur-3xl"></div>
+        <div className="absolute top-20 right-0 w-48 sm:w-96 h-48 sm:h-96 bg-cyan-200/20 rounded-full blur-3xl"></div>
+        <div className="absolute bottom-0 left-0 w-36 sm:w-72 h-36 sm:h-72 bg-teal-200/20 rounded-full blur-3xl"></div>
 
-        <div className="relative max-w-6xl mx-auto px-4 sm:px-6 py-20 md:py-28">
-          <div className="grid md:grid-cols-2 gap-12 items-center">
+        <div className="relative max-w-6xl mx-auto px-4 sm:px-6 py-12 sm:py-20 md:py-28">
+          <div className="grid md:grid-cols-2 gap-8 md:gap-12 items-center">
             {/* Left content */}
-            <div className="space-y-6">
-              <div className="inline-flex items-center gap-2 bg-cyan-50 border border-cyan-200 rounded-full px-4 py-1.5 text-sm text-cyan-600 font-medium">
-                <Heart className="w-4 h-4" />
+            <div className="space-y-5 sm:space-y-6 text-center md:text-left">
+              <div className="inline-flex items-center gap-2 bg-cyan-50 border border-cyan-200 rounded-full px-3 sm:px-4 py-1.5 text-xs sm:text-sm text-cyan-600 font-medium">
+                <Heart className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
                 Trusted by 10,000+ patients
               </div>
-              <h1 className="text-4xl md:text-5xl lg:text-6xl font-black text-gray-900 leading-tight">
+              <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black text-gray-900 leading-tight">
                 Your Health,{" "}
                 <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-500 to-teal-500">
                   Our Priority
                 </span>
               </h1>
-              <p className="text-lg text-gray-600 leading-relaxed max-w-lg">
+              <p className="text-base sm:text-lg text-gray-600 leading-relaxed max-w-lg mx-auto md:mx-0">
                 Book appointments with top doctors in seconds. Access medical records,
                 manage prescriptions, and take control of your healthcare journey.
               </p>
-              <div className="flex flex-col sm:flex-row gap-3 pt-2">
+              <div className="flex flex-col sm:flex-row gap-3 pt-2 items-center md:items-start">
                 <Link
                   href="/signup"
-                  className="inline-flex items-center justify-center gap-2 px-8 py-4 bg-gradient-to-r from-cyan-500 to-teal-500 text-white font-bold rounded-2xl text-base shadow-lg shadow-cyan-200 hover:shadow-xl hover:-translate-y-0.5 transition-all duration-200"
+                  className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 sm:px-8 py-3.5 sm:py-4 bg-gradient-to-r from-cyan-500 to-teal-500 text-white font-bold rounded-2xl text-sm sm:text-base shadow-lg shadow-cyan-200 hover:shadow-xl hover:-translate-y-0.5 transition-all duration-200"
                 >
                   Get Started Free
                   <ChevronRight className="w-5 h-5" />
                 </Link>
                 <Link
                   href="/login"
-                  className="inline-flex items-center justify-center gap-2 px-8 py-4 bg-white text-gray-700 font-bold rounded-2xl text-base border-2 border-gray-200 hover:border-cyan-300 hover:-translate-y-0.5 transition-all duration-200"
+                  className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 sm:px-8 py-3.5 sm:py-4 bg-white text-gray-700 font-bold rounded-2xl text-sm sm:text-base border-2 border-gray-200 hover:border-cyan-300 hover:-translate-y-0.5 transition-all duration-200"
                 >
                   Login to Dashboard
                 </Link>
               </div>
 
               {/* Trust badges */}
-              <div className="flex items-center gap-6 pt-4">
+              <div className="flex items-center justify-center md:justify-start gap-4 sm:gap-6 pt-4 flex-wrap">
                 <div className="flex items-center gap-1.5">
                   <Star className="w-4 h-4 text-amber-400 fill-amber-400" />
                   <span className="text-sm font-bold text-gray-900">4.9</span>
-                  <span className="text-sm text-gray-500">Rating</span>
+                  <span className="text-xs sm:text-sm text-gray-500">Rating</span>
                 </div>
                 <div className="h-4 w-px bg-gray-200"></div>
                 <div className="flex items-center gap-1.5">
                   <Users className="w-4 h-4 text-cyan-500" />
                   <span className="text-sm font-bold text-gray-900">50+</span>
-                  <span className="text-sm text-gray-500">Doctors</span>
+                  <span className="text-xs sm:text-sm text-gray-500">Doctors</span>
                 </div>
                 <div className="h-4 w-px bg-gray-200"></div>
                 <div className="flex items-center gap-1.5">
                   <Calendar className="w-4 h-4 text-emerald-500" />
                   <span className="text-sm font-bold text-gray-900">10K+</span>
-                  <span className="text-sm text-gray-500">Bookings</span>
+                  <span className="text-xs sm:text-sm text-gray-500">Bookings</span>
                 </div>
               </div>
             </div>
@@ -130,18 +130,18 @@ export default function HomePage() {
       </section>
 
       {/* ========== FEATURES ========== */}
-      <section className="py-20 bg-gray-50">
+      <section className="py-12 sm:py-20 bg-gray-50">
         <div className="max-w-6xl mx-auto px-4 sm:px-6">
-          <div className="text-center mb-14">
-            <h2 className="text-3xl md:text-4xl font-black text-gray-900 mb-3">
+          <div className="text-center mb-10 sm:mb-14">
+            <h2 className="text-2xl sm:text-3xl md:text-4xl font-black text-gray-900 mb-3">
               Why Choose Schedula?
             </h2>
-            <p className="text-gray-500 text-lg max-w-xl mx-auto">
+            <p className="text-gray-500 text-base sm:text-lg max-w-xl mx-auto">
               Everything you need to manage your healthcare, all in one place.
             </p>
           </div>
 
-          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
             {[
               {
                 icon: Calendar,
@@ -182,10 +182,10 @@ export default function HomePage() {
             ].map((feature, i) => (
               <div
                 key={i}
-                className="bg-white rounded-2xl p-6 border border-gray-100 shadow-sm hover:shadow-md hover:-translate-y-1 transition-all duration-300"
+                className="bg-white rounded-2xl p-5 sm:p-6 border border-gray-100 shadow-sm hover:shadow-md hover:-translate-y-1 transition-all duration-300"
               >
                 <div
-                  className={`w-12 h-12 rounded-xl flex items-center justify-center mb-4 ${feature.color === "cyan"
+                  className={`w-10 h-10 sm:w-12 sm:h-12 rounded-xl flex items-center justify-center mb-3 sm:mb-4 ${feature.color === "cyan"
                       ? "bg-cyan-100 text-cyan-500"
                       : feature.color === "emerald"
                         ? "bg-emerald-100 text-emerald-500"
@@ -198,10 +198,10 @@ export default function HomePage() {
                               : "bg-blue-100 text-blue-500"
                     }`}
                 >
-                  <feature.icon className="w-6 h-6" />
+                  <feature.icon className="w-5 h-5 sm:w-6 sm:h-6" />
                 </div>
-                <h3 className="text-base font-bold text-gray-900 mb-2">{feature.title}</h3>
-                <p className="text-sm text-gray-500 leading-relaxed">{feature.desc}</p>
+                <h3 className="text-sm sm:text-base font-bold text-gray-900 mb-1.5 sm:mb-2">{feature.title}</h3>
+                <p className="text-xs sm:text-sm text-gray-500 leading-relaxed">{feature.desc}</p>
               </div>
             ))}
           </div>
@@ -209,18 +209,18 @@ export default function HomePage() {
       </section>
 
       {/* ========== HOW IT WORKS ========== */}
-      <section className="py-20">
+      <section className="py-12 sm:py-20">
         <div className="max-w-6xl mx-auto px-4 sm:px-6">
-          <div className="text-center mb-14">
-            <h2 className="text-3xl md:text-4xl font-black text-gray-900 mb-3">
+          <div className="text-center mb-10 sm:mb-14">
+            <h2 className="text-2xl sm:text-3xl md:text-4xl font-black text-gray-900 mb-3">
               How It Works
             </h2>
-            <p className="text-gray-500 text-lg max-w-xl mx-auto">
+            <p className="text-gray-500 text-base sm:text-lg max-w-xl mx-auto">
               Get started in 3 simple steps
             </p>
           </div>
 
-          <div className="grid md:grid-cols-3 gap-8">
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-8">
             {[
               {
                 step: "01",
@@ -239,11 +239,11 @@ export default function HomePage() {
               },
             ].map((item, i) => (
               <div key={i} className="text-center">
-                <div className="w-16 h-16 mx-auto mb-5 rounded-2xl bg-gradient-to-br from-cyan-500 to-teal-500 flex items-center justify-center text-white text-xl font-black shadow-lg shadow-cyan-200">
+                <div className="w-14 h-14 sm:w-16 sm:h-16 mx-auto mb-4 sm:mb-5 rounded-2xl bg-gradient-to-br from-cyan-500 to-teal-500 flex items-center justify-center text-white text-lg sm:text-xl font-black shadow-lg shadow-cyan-200">
                   {item.step}
                 </div>
-                <h3 className="text-lg font-bold text-gray-900 mb-2">{item.title}</h3>
-                <p className="text-sm text-gray-500 leading-relaxed max-w-xs mx-auto">
+                <h3 className="text-base sm:text-lg font-bold text-gray-900 mb-2">{item.title}</h3>
+                <p className="text-xs sm:text-sm text-gray-500 leading-relaxed max-w-xs mx-auto">
                   {item.desc}
                 </p>
               </div>
@@ -253,21 +253,21 @@ export default function HomePage() {
       </section>
 
       {/* ========== CTA ========== */}
-      <section className="py-20">
+      <section className="py-12 sm:py-20">
         <div className="max-w-6xl mx-auto px-4 sm:px-6">
-          <div className="bg-gradient-to-r from-cyan-500 to-teal-500 rounded-3xl p-10 md:p-16 text-center text-white relative overflow-hidden">
-            <div className="absolute top-0 right-0 w-64 h-64 bg-white/10 rounded-full blur-3xl"></div>
-            <div className="absolute bottom-0 left-0 w-48 h-48 bg-black/10 rounded-full blur-3xl"></div>
+          <div className="bg-gradient-to-r from-cyan-500 to-teal-500 rounded-2xl sm:rounded-3xl p-8 sm:p-10 md:p-16 text-center text-white relative overflow-hidden">
+            <div className="absolute top-0 right-0 w-48 sm:w-64 h-48 sm:h-64 bg-white/10 rounded-full blur-3xl"></div>
+            <div className="absolute bottom-0 left-0 w-36 sm:w-48 h-36 sm:h-48 bg-black/10 rounded-full blur-3xl"></div>
             <div className="relative z-10">
-              <h2 className="text-3xl md:text-4xl font-black mb-4">
+              <h2 className="text-2xl sm:text-3xl md:text-4xl font-black mb-3 sm:mb-4">
                 Ready to Book Your Appointment?
               </h2>
-              <p className="text-lg text-cyan-100 mb-8 max-w-lg mx-auto">
+              <p className="text-sm sm:text-lg text-cyan-100 mb-6 sm:mb-8 max-w-lg mx-auto">
                 Join thousands of patients who manage their healthcare effortlessly with Schedula.
               </p>
               <Link
                 href="/signup"
-                className="inline-flex items-center gap-2 px-10 py-4 bg-white text-cyan-600 font-bold rounded-2xl text-base shadow-lg hover:shadow-xl hover:-translate-y-0.5 transition-all duration-200"
+                className="inline-flex items-center gap-2 px-8 sm:px-10 py-3.5 sm:py-4 bg-white text-cyan-600 font-bold rounded-2xl text-sm sm:text-base shadow-lg hover:shadow-xl hover:-translate-y-0.5 transition-all duration-200"
               >
                 Get Started — It&apos;s Free
                 <ChevronRight className="w-5 h-5" />
@@ -278,7 +278,7 @@ export default function HomePage() {
       </section>
 
       {/* ========== FOOTER ========== */}
-      <footer className="bg-gray-50 border-t border-gray-100 py-10">
+      <footer className="bg-gray-50 border-t border-gray-100 py-8 sm:py-10">
         <div className="max-w-6xl mx-auto px-4 sm:px-6">
           <div className="flex flex-col md:flex-row items-center justify-between gap-4">
             <div className="flex items-center gap-2">
@@ -288,7 +288,7 @@ export default function HomePage() {
                 Healthcare
               </span>
             </div>
-            <p className="text-sm text-gray-400">
+            <p className="text-xs sm:text-sm text-gray-400">
               © 2026 Schedula Healthcare. All rights reserved.
             </p>
             <div className="flex items-center gap-4">

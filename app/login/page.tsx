@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { Eye, EyeOff, Stethoscope } from "lucide-react";
+import { Eye, EyeOff, Stethoscope, ArrowLeft } from "lucide-react";
 import Swal from "sweetalert2";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -64,7 +64,7 @@ export default function Home() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center relative px-4 font-sans">
+    <div className="min-h-screen flex items-center justify-center relative px-4 py-8 font-sans">
       {/* Background */}
       <div className="absolute inset-0 z-0">
         <img
@@ -76,7 +76,16 @@ export default function Home() {
       </div>
 
       {/* Card */}
-      <div className="relative z-10 w-full max-w-md bg-white/95 p-8 sm:p-10 rounded-3xl shadow-2xl border border-gray-200">
+      <div className="relative z-10 w-full max-w-md bg-white/95 p-6 sm:p-8 md:p-10 rounded-3xl shadow-2xl border border-gray-200">
+        {/* Back to Home */}
+        <Link
+          href="/"
+          className="inline-flex items-center gap-1.5 text-sm text-gray-500 hover:text-cyan-600 transition-colors mb-5 group"
+        >
+          <ArrowLeft className="w-4 h-4 group-hover:-translate-x-0.5 transition-transform" />
+          Back to Home
+        </Link>
+
         {/* Logo */}
         <div className="flex items-center justify-center gap-2 mb-6">
           <Stethoscope className="w-8 h-8 text-cyan-500" />

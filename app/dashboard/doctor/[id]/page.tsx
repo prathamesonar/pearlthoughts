@@ -185,7 +185,7 @@ export default function DoctorDetailPage({
     ];
 
     return (
-        <div className="max-w-2xl mx-auto space-y-6 pb-8">
+        <div className="max-w-2xl mx-auto space-y-4 sm:space-y-6 pb-8 px-1">
             {/* Back Button */}
             <button
                 onClick={() => router.back()}
@@ -197,15 +197,15 @@ export default function DoctorDetailPage({
             </button>
 
             {/* Doctor Card */}
-            <div className="bg-white rounded-2xl border border-gray-100 p-6 shadow-sm">
-                <div className="flex gap-5">
+            <div className="bg-white rounded-2xl border border-gray-100 p-4 sm:p-6 shadow-sm">
+                <div className="flex gap-3 sm:gap-5">
                     <img
                         src={doctor.imageUrl}
                         alt={doctor.name}
-                        className="w-24 h-24 md:w-28 md:h-28 rounded-2xl object-cover shadow-md"
+                        className="w-20 h-20 sm:w-24 sm:h-24 md:w-28 md:h-28 rounded-2xl object-cover shadow-md flex-shrink-0"
                     />
                     <div className="flex-1">
-                        <h2 className="text-xl md:text-2xl font-bold text-gray-900">
+                        <h2 className="text-lg sm:text-xl md:text-2xl font-bold text-gray-900">
                             {doctor.name}
                         </h2>
                         <p className="text-cyan-500 font-medium mt-0.5">
@@ -222,7 +222,7 @@ export default function DoctorDetailPage({
             </div>
 
             {/* Stats */}
-            <div className="grid grid-cols-4 gap-3">
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
                 {stats.map((stat, i) => (
                     <div
                         key={i}
@@ -273,7 +273,7 @@ export default function DoctorDetailPage({
             </div>
 
             {/* ========== BOOKING SECTION ========== */}
-            <div className="bg-white rounded-2xl border border-gray-100 p-6 shadow-sm space-y-6">
+            <div className="bg-white rounded-2xl border border-gray-100 p-4 sm:p-6 shadow-sm space-y-5 sm:space-y-6">
                 {/* Select Date */}
                 <div>
                     <h3 className="text-base font-bold text-gray-900 mb-4">Select Date</h3>
@@ -282,14 +282,14 @@ export default function DoctorDetailPage({
                             <button
                                 key={i}
                                 onClick={() => setSelectedDate(i)}
-                                className={`flex flex-col items-center min-w-[64px] py-3 px-4 rounded-xl border-2 transition-all duration-200 cursor-pointer
+                                className={`flex flex-col items-center min-w-[56px] sm:min-w-[64px] py-2.5 sm:py-3 px-3 sm:px-4 rounded-xl border-2 transition-all duration-200 cursor-pointer
                                     ${selectedDate === i
                                         ? "bg-cyan-500 border-cyan-500 text-white shadow-lg shadow-cyan-200"
                                         : "bg-white border-gray-200 text-gray-600 hover:border-cyan-300"
                                     }`}
                             >
-                                <span className="text-lg font-bold">{day.num}</span>
-                                <span className="text-xs font-medium mt-0.5">{day.day}</span>
+                                <span className="text-base sm:text-lg font-bold">{day.num}</span>
+                                <span className="text-[10px] sm:text-xs font-medium mt-0.5">{day.day}</span>
                             </button>
                         ))}
                     </div>
@@ -298,7 +298,7 @@ export default function DoctorDetailPage({
                 {/* Select Time Slot */}
                 <div>
                     <h3 className="text-base font-bold text-gray-900 mb-4">Select Time Slot</h3>
-                    <div className="grid grid-cols-2 gap-3">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 sm:gap-3">
                         {TIME_SLOTS.map((slot) => {
                             const isBooked = bookedSlots.includes(slot);
                             return (
@@ -306,7 +306,7 @@ export default function DoctorDetailPage({
                                     key={slot}
                                     onClick={() => !isBooked && setSelectedSlot(slot)}
                                     disabled={isBooked}
-                                    className={`py-3 px-4 rounded-xl border-2 text-sm font-medium transition-all duration-200 relative
+                                    className={`py-2.5 sm:py-3 px-3 sm:px-4 rounded-xl border-2 text-xs sm:text-sm font-medium transition-all duration-200 relative
                                         ${isBooked
                                             ? "bg-red-50 border-red-200 text-red-300 cursor-not-allowed opacity-70"
                                             : selectedSlot === slot
