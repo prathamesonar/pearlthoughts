@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { Search, Heart, MapPin, Clock } from "lucide-react";
-import { doctors, getLoggedInUser } from "../lib/data";
+import { getAllDoctors, getLoggedInUser } from "../lib/data";
 import type { User, Doctor } from "../lib/data";
 
 export default function DashboardPage() {
@@ -37,8 +37,9 @@ export default function DashboardPage() {
             return next;
         });
     };
+    const allDoctors = getAllDoctors();
 
-    const filtered: Doctor[] = doctors.filter(
+    const filtered: Doctor[] = allDoctors.filter(
         (d) =>
             d.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
             d.specialty.toLowerCase().includes(searchQuery.toLowerCase())
@@ -73,7 +74,7 @@ export default function DashboardPage() {
                     </div>
                     <div className="flex gap-2 sm:gap-4">
                         <div className="bg-white/20 backdrop-blur-sm rounded-xl px-3 py-2 sm:px-4 sm:py-3 text-center">
-                            <p className="text-xl sm:text-2xl font-bold">{doctors.length}</p>
+                            <p className="text-xl sm:text-2xl font-bold">{allDoctors.length}</p>
                             <p className="text-[10px] sm:text-xs text-cyan-100">Doctors</p>
                         </div>
                         <div className="bg-white/20 backdrop-blur-sm rounded-xl px-3 py-2 sm:px-4 sm:py-3 text-center">

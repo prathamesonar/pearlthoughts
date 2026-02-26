@@ -23,6 +23,7 @@ export interface User {
     phone: string;
     password: string;
     location: string;
+    birthdate?: string;
 }
 
 export const doctors: Doctor[] = [
@@ -275,4 +276,134 @@ export function registerUser(user: User): boolean {
     users.push(user);
     localStorage.setItem("schedula_users", JSON.stringify(users));
     return true;
+}
+
+export function getUserByEmail(email: string): User | null {
+    if (typeof window === "undefined") return null;
+    seedDefaultUser();
+    const raw = localStorage.getItem("schedula_users");
+    if (!raw) return null;
+    const users: User[] = JSON.parse(raw);
+    return users.find((u) => u.email.toLowerCase() === email.toLowerCase()) || null;
+}
+
+// ─── Doctor Module ────────────────────────────────────────────
+
+export interface DoctorUser {
+    id: string;
+    name: string;
+    email: string;
+    phone: string;
+    password: string;
+    specialty: string;
+    qualification: string;
+    experience: string;
+    about: string;
+    timings: string;
+    availableDays: string;
+    imageUrl: string;
+    location: string;
+}
+
+export const defaultDoctorUser: DoctorUser = {
+    id: "doc_default",
+    name: "Dr. Demo Doctor",
+    email: "doctor@gmail.com",
+    phone: "9876543210",
+    password: "Doctor@123",
+    specialty: "General Physician",
+    qualification: "MBBS, MD",
+    experience: "5+",
+    about: "Experienced general physician providing comprehensive healthcare services.",
+    timings: "09:00 AM - 05:00 PM",
+    availableDays: "Monday to Friday",
+    imageUrl: "https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?auto=format&fit=crop&q=80&w=300",
+    location: "Mumbai, India",
+};
+
+export function seedDefaultDoctor() {
+    if (typeof window === "undefined") return;
+    const existing = localStorage.getItem("schedula_doctors_users");
+    if (!existing) {
+        localStorage.setItem("schedula_doctors_users", JSON.stringify([defaultDoctorUser]));
+    } else {
+        const docs: DoctorUser[] = JSON.parse(existing);
+        const hasDefault = docs.some((d) => d.email === defaultDoctorUser.email);
+        if (!hasDefault) {
+            docs.push(defaultDoctorUser);
+            localStorage.setItem("schedula_doctors_users", JSON.stringify(docs));
+        }
+    }
+}
+
+export function validateDoctorCredentials(email: string, password: string): DoctorUser | null {
+    if (typeof window === "undefined") return null;
+    const raw = localStorage.getItem("schedula_doctors_users");
+    if (!raw) return null;
+    const docs: DoctorUser[] = JSON.parse(raw);
+    const found = docs.find(
+        (d) => d.email.toLowerCase() === email.toLowerCase() && d.password === password
+    );
+    return found || null;
+}
+
+export function setDoctorSession(doctor: DoctorUser) {
+    if (typeof window === "undefined") return;
+    localStorage.setItem("schedula_current_doctor", JSON.stringify(doctor));
+}
+
+export function getLoggedInDoctor(): DoctorUser | null {
+    if (typeof window === "undefined") return null;
+    const raw = localStorage.getItem("schedula_current_doctor");
+    if (!raw) return null;
+    return JSON.parse(raw) as DoctorUser;
+}
+
+export function logoutDoctor() {
+    if (typeof window === "undefined") return;
+    localStorage.removeItem("schedula_current_doctor");
+}
+
+export function registerDoctor(doctor: DoctorUser): boolean {
+    if (typeof window === "undefined") return false;
+    const raw = localStorage.getItem("schedula_doctors_users");
+    const docs: DoctorUser[] = raw ? JSON.parse(raw) : [];
+    const exists = docs.some(
+        (d) => d.email.toLowerCase() === doctor.email.toLowerCase()
+    );
+    if (exists) return false;
+    docs.push(doctor);
+    localStorage.setItem("schedula_doctors_users", JSON.stringify(docs));
+    return true;
+}
+
+/** Merge hardcoded doctors + registered doctors into one list for patient search */
+export function getAllDoctors(): Doctor[] {
+    if (typeof window === "undefined") return doctors;
+    const raw = localStorage.getItem("schedula_doctors_users");
+    if (!raw) return doctors;
+    const registeredDocs: DoctorUser[] = JSON.parse(raw);
+    const converted: Doctor[] = registeredDocs.map((d) => ({
+        id: d.id,
+        name: d.name,
+        specialty: d.specialty,
+        qualification: d.qualification,
+        experience: d.experience,
+        patients: "0",
+        rating: 5.0,
+        reviews: 0,
+        availability: "Available today",
+        timings: d.timings,
+        about: d.about,
+        imageUrl: d.imageUrl,
+        services: [
+            { service: "Service", value: d.specialty },
+            { service: "Specialization", value: d.specialty },
+        ],
+        availableDays: d.availableDays,
+    }));
+    // Merge: hardcoded first, then registered (avoid duplicates by id)
+    const hardcodedIds = new Set(doctors.map((d) => d.id));
+    const unique = converted.filter((d) => !hardcodedIds.has(d.id));
+    return [...doctors, ...unique];
 }

@@ -17,11 +17,12 @@ export default function SignupPage() {
       fullname: { value: string };
       email: { value: string };
       phone: { value: string };
+      birthdate: { value: string };
       password: { value: string };
       confirmPassword: { value: string };
     };
 
-    const { fullname, email, phone, password, confirmPassword } = target;
+    const { fullname, email, phone, birthdate, password, confirmPassword } = target;
 
     if (!fullname.value || !email.value || !phone.value || !password.value || !confirmPassword.value) {
       Swal.fire({
@@ -48,6 +49,7 @@ export default function SignupPage() {
         name: fullname.value,
         email: email.value,
         phone: phone.value,
+        birthdate: birthdate.value,
         password: password.value,
         location: "India",
       })
@@ -124,6 +126,15 @@ export default function SignupPage() {
               placeholder="Enter your phone number"
               required
               className="w-full px-4 py-3 rounded-xl border border-gray-200 bg-gray-50/50 focus:ring-2 focus:ring-cyan-500 focus:border-transparent focus:outline-none placeholder-gray-400 text-gray-900 transition"
+            />
+          </div>
+
+          <div>
+            <input
+              type="date"
+              name="birthdate"
+              required
+              className="w-full px-4 py-3 rounded-xl border border-gray-200 bg-gray-50/50 focus:ring-2 focus:ring-cyan-500 focus:border-transparent focus:outline-none text-gray-900 transition"
             />
           </div>
 

@@ -113,17 +113,23 @@ export default function AppointmentsPage() {
                 <div className="grid gap-4">
                     {filteredAppointments.map((apt) => {
                         const isCancelled = apt.status === 'Cancelled';
+                        const isTerminal = ['completed', 'Cancelled', 'no-show'].includes(apt.status);
+                        const statusConfig: Record<string, { label: string; bg: string; text: string }> = {
+                            upcoming: { label: "Booked", bg: "bg-blue-50", text: "text-blue-600" },
+                            "in-progress": { label: "In Progress", bg: "bg-amber-50", text: "text-amber-600" },
+                            completed: { label: "Completed", bg: "bg-emerald-50", text: "text-emerald-600" },
+                            Cancelled: { label: "Cancelled", bg: "bg-red-50", text: "text-red-500" },
+                            "no-show": { label: "No Show", bg: "bg-gray-100", text: "text-gray-500" },
+                        };
+                        const sc = statusConfig[apt.status] || statusConfig.upcoming;
                         return (
-                            <div key={apt.id} className={`bg-white rounded-2xl border border-gray-100 p-5 shadow-sm ${isCancelled ? 'opacity-75' : ''}`}>
+                            <div key={apt.id} className={`bg-white rounded-2xl border border-gray-100 p-5 shadow-sm ${isTerminal && apt.status !== 'completed' ? 'opacity-75' : ''}`}>
                                 <div className="flex items-start justify-between">
                                     <div>
                                         <div className="flex flex-wrap items-center gap-2 mb-1">
                                             <h3 className={`font-bold ${isCancelled ? 'text-gray-600 line-through decoration-gray-300' : 'text-gray-900'}`}>{apt.doctorName}</h3>
-                                            <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full uppercase tracking-wider ${isCancelled
-                                                ? 'bg-red-50 text-red-600'
-                                                : 'bg-emerald-100 text-emerald-600'
-                                                }`}>
-                                                {isCancelled ? 'Cancelled' : 'Booked'}
+                                            <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full uppercase tracking-wider ${sc.bg} ${sc.text}`}>
+                                                {sc.label}
                                             </span>
                                         </div>
                                         <p className="text-cyan-500 text-sm font-medium">{apt.specialty}</p>
@@ -137,7 +143,7 @@ export default function AppointmentsPage() {
                                             )}
                                         </div>
                                     </div>
-                                    {!isCancelled && (
+                                    {!isTerminal && (
                                         <button
                                             onClick={() => cancelAppointment(apt.id)}
                                             className="p-2 rounded-xl hover:bg-red-50 text-gray-400 hover:text-red-500 transition cursor-pointer"

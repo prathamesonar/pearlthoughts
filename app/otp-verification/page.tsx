@@ -4,8 +4,8 @@ import { useState, useRef, useEffect, Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { Stethoscope } from "lucide-react";
 import Swal from "sweetalert2";
-import { registerUser, setUserSession } from "../lib/data";
-import type { User } from "../lib/data";
+import { registerUser, setUserSession, registerDoctor, setDoctorSession } from "../lib/data";
+import type { User, DoctorUser } from "../lib/data";
 
 function OTPContent() {
   const [digits, setDigits] = useState<string[]>(["", "", "", "", "", ""]);
@@ -14,6 +14,7 @@ function OTPContent() {
   const searchParams = useSearchParams();
   const phone = searchParams.get("phone");
   const flow = searchParams.get("flow"); // "login" or null (signup)
+  const role = searchParams.get("role"); // "doctor" or null (user)
 
   const correctOTP = "123456";
   const [timer, setTimer] = useState(60);
@@ -33,12 +34,10 @@ function OTPContent() {
   };
 
   const handleChange = (index: number, value: string) => {
-    if (!/^\d*$/.test(value)) return; // digits only
+    if (!/^\d*$/.test(value)) return;
     const newDigits = [...digits];
-    newDigits[index] = value.slice(-1); // take last char
+    newDigits[index] = value.slice(-1);
     setDigits(newDigits);
-
-    // Auto-focus next
     if (value && index < 5) {
       inputRefs.current[index + 1]?.focus();
     }
@@ -77,7 +76,56 @@ function OTPContent() {
     }
 
     if (otp === correctOTP) {
-      if (flow === "login") {
+      // ─── Doctor flows ───
+      if (role === "doctor") {
+        if (flow === "login") {
+          // Doctor login — finalize session
+          const pendingRaw = sessionStorage.getItem("schedula_login_pending_doctor");
+          if (pendingRaw) {
+            const doctor: DoctorUser = JSON.parse(pendingRaw);
+            setDoctorSession(doctor);
+            sessionStorage.removeItem("schedula_login_pending_doctor");
+          }
+          Swal.fire({
+            icon: "success",
+            title: "Welcome, Doctor!",
+            text: "OTP verified successfully.",
+            timer: 1500,
+            showConfirmButton: false,
+          }).then(() => {
+            router.push("/doctor-dashboard");
+          });
+        } else {
+          // Doctor signup — register doctor
+          const pendingRaw = sessionStorage.getItem("schedula_pending_doctor");
+          if (pendingRaw) {
+            const pendingDoctor: DoctorUser = JSON.parse(pendingRaw);
+            const success = registerDoctor(pendingDoctor);
+            if (!success) {
+              Swal.fire({
+                icon: "warning",
+                title: "Email Already Exists",
+                text: "A doctor account with this email already exists. Please login instead.",
+                confirmButtonColor: "#22d3ee",
+              }).then(() => {
+                router.push("/login");
+              });
+              return;
+            }
+            sessionStorage.removeItem("schedula_pending_doctor");
+          }
+          Swal.fire({
+            icon: "success",
+            title: "Doctor Account Created!",
+            text: "Your doctor account has been successfully created. Please login.",
+            confirmButtonColor: "#22d3ee",
+          }).then(() => {
+            router.push("/login");
+          });
+        }
+      }
+      // ─── User flows ───
+      else if (flow === "login") {
         const pendingRaw = sessionStorage.getItem("schedula_login_pending");
         if (pendingRaw) {
           const user: User = JSON.parse(pendingRaw);
@@ -94,6 +142,7 @@ function OTPContent() {
           router.push("/dashboard");
         });
       } else {
+        // User signup
         const pendingRaw = sessionStorage.getItem("schedula_pending_user");
         if (pendingRaw) {
           const pendingUser: User = JSON.parse(pendingRaw);
@@ -111,7 +160,6 @@ function OTPContent() {
           }
           sessionStorage.removeItem("schedula_pending_user");
         }
-
         Swal.fire({
           icon: "success",
           title: "Account Created!",
@@ -133,7 +181,6 @@ function OTPContent() {
 
   return (
     <div className="relative min-h-screen flex items-center justify-center px-4 overflow-hidden font-sans">
-      {/* Background */}
       <div className="absolute inset-0 z-0">
         <img
           src="https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?auto=format&fit=crop&q=80&w=2070"
@@ -144,9 +191,7 @@ function OTPContent() {
         <div className="absolute inset-0 bg-gradient-to-t from-cyan-900/60 to-transparent"></div>
       </div>
 
-      {/* OTP Card */}
       <div className="relative w-full max-w-md p-8 sm:p-10 rounded-3xl bg-white/95 backdrop-blur-sm shadow-2xl border border-white/50 z-10">
-        {/* Logo */}
         <div className="flex items-center justify-center gap-2 mb-6">
           <Stethoscope className="w-8 h-8 text-cyan-500" />
           <span className="text-2xl font-bold text-gray-900">Schedula</span>
@@ -154,20 +199,15 @@ function OTPContent() {
         </div>
 
         <h2 className="text-2xl font-bold text-gray-900 text-center mb-2">OTP Code Verification</h2>
-        <p className="text-center text-gray-500 text-sm mb-2">
-          Code has been sent to
-        </p>
+        {role === "doctor" && (
+          <p className="text-center text-cyan-600 text-xs font-medium mb-1">🩺 Doctor Verification</p>
+        )}
+        <p className="text-center text-gray-500 text-sm mb-2">Code has been sent to</p>
         <p className="text-center text-gray-900 font-semibold mb-6">
           +91 {phone ? phone.slice(0, 3) + " ****" + phone.slice(-2) : "XXX ****XX"}
         </p>
 
-        {/* Hint */}
-        {/* <div className="mb-6 bg-emerald-50 border border-emerald-200 rounded-xl p-3 text-center text-sm">
-          <p className="text-emerald-700">💡 Hint: OTP is <span className="font-mono font-bold">123456</span></p>
-        </div> */}
-
         <form onSubmit={handleVerify} className="space-y-6">
-          {/* 6 Individual Digit Boxes */}
           <div className="flex justify-center gap-3" onPaste={handlePaste}>
             {digits.map((digit, i) => (
               <input

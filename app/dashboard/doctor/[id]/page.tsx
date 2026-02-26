@@ -12,17 +12,57 @@ import {
     CheckCircle,
 } from "lucide-react";
 import Swal from "sweetalert2";
-import { doctors, getLoggedInUser } from "../../../lib/data";
+import { getAllDoctors, getLoggedInUser } from "../../../lib/data";
 import type { Doctor } from "../../../lib/data";
 
-const TIME_SLOTS = [
-    "09:00 AM - 09:30 AM",
-    "10:00 AM - 10:30 AM",
-    "11:00 AM - 11:30 AM",
-    "02:00 PM - 02:30 PM",
-    "04:00 PM - 04:30 PM",
-    "06:00 PM - 06:30 PM",
+const DEFAULT_TIME_SLOTS = [
+    "09:00 - 09:30",
+    "10:00 - 10:30",
+    "11:00 - 11:30",
+    "14:00 - 14:30",
+    "16:00 - 16:30",
+    "18:00 - 18:30",
 ];
+
+interface SlotConfig {
+    id: string;
+    specificDate: string;
+    recurringDay: string;
+    startTime: string;
+    endTime: string;
+    duration: number;
+    appointmentType: string;
+    maxPatients: number;
+    slots: string[];
+}
+
+function getDoctorSlotsForDate(doctorId: string, date: Date): string[] {
+    const raw = localStorage.getItem(`schedula_doctor_slots_${doctorId}`);
+    if (!raw) return DEFAULT_TIME_SLOTS;
+    const configs: SlotConfig[] = JSON.parse(raw);
+    if (configs.length === 0) return DEFAULT_TIME_SLOTS;
+
+    const dayName = date.toLocaleDateString("en-US", { weekday: "long" });
+    const dateStr = date.toISOString().split("T")[0];
+
+    const matchingSlots: string[] = [];
+    for (const config of configs) {
+        if (config.specificDate && config.specificDate === dateStr) {
+            matchingSlots.push(...config.slots);
+        } else if (config.recurringDay && config.recurringDay === dayName) {
+            matchingSlots.push(...config.slots);
+        }
+    }
+
+    // If no configs match this specific date/day, show all slots from all configs
+    if (matchingSlots.length === 0) {
+        const allSlots = new Set<string>();
+        configs.forEach(c => c.slots.forEach(s => allSlots.add(s)));
+        return allSlots.size > 0 ? Array.from(allSlots) : DEFAULT_TIME_SLOTS;
+    }
+
+    return [...new Set(matchingSlots)];
+}
 
 function getNextWeekdays(count: number) {
     const days: { date: Date; day: string; num: number }[] = [];
@@ -54,6 +94,7 @@ export default function DoctorDetailPage({
     const [selectedDate, setSelectedDate] = useState<number>(0);
     const [selectedSlot, setSelectedSlot] = useState<string>("");
     const [bookedSlots, setBookedSlots] = useState<string[]>([]);
+    const [availableSlots, setAvailableSlots] = useState<string[]>(DEFAULT_TIME_SLOTS);
 
     const weekdays = getNextWeekdays(5);
 
@@ -78,7 +119,7 @@ export default function DoctorDetailPage({
             router.push("/login");
             return;
         }
-        const found = doctors.find((d) => d.id === id);
+        const found = getAllDoctors().find((d) => d.id === id);
         if (!found) {
             router.push("/dashboard");
             return;
@@ -87,15 +128,18 @@ export default function DoctorDetailPage({
         setMounted(true);
     }, [id, router]);
 
-    // Update booked slots when date or doctor changes
+    // Update booked slots and available doctor slots when date or doctor changes
     useEffect(() => {
         if (!doctor) return;
         const chosenDate = weekdays[selectedDate]?.date;
         if (!chosenDate) return;
         const booked = getBookedSlots(doctor.id, chosenDate);
         setBookedSlots(booked);
-        // If the currently selected slot is now booked, deselect it
-        if (selectedSlot && booked.includes(selectedSlot)) {
+        // Load doctor-created slots for this date
+        const doctorSlots = getDoctorSlotsForDate(doctor.id, chosenDate);
+        setAvailableSlots(doctorSlots);
+        // If the currently selected slot is now booked or no longer available, deselect it
+        if (selectedSlot && (booked.includes(selectedSlot) || !doctorSlots.includes(selectedSlot))) {
             setSelectedSlot("");
         }
     }, [selectedDate, doctor, mounted]);
@@ -130,6 +174,9 @@ export default function DoctorDetailPage({
             doctorName: doctor.name,
             specialty: doctor.specialty,
             userEmail: user.email,
+            userName: user.name,
+            userPhone: user.phone || "",
+            userBirthdate: user.birthdate || "",
             date: chosenDate.toISOString(),
             timeSlot: selectedSlot,
             status: "upcoming",
@@ -299,7 +346,7 @@ export default function DoctorDetailPage({
                 <div>
                     <h3 className="text-base font-bold text-gray-900 mb-4">Select Time Slot</h3>
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 sm:gap-3">
-                        {TIME_SLOTS.map((slot) => {
+                        {availableSlots.map((slot) => {
                             const isBooked = bookedSlots.includes(slot);
                             return (
                                 <button
