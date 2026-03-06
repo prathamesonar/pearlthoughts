@@ -1,10 +1,10 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
-import { CheckCircle2, Calendar, Clock, MapPin, User, ArrowRight, Download } from "lucide-react";
+import { CheckCircle2, Calendar, Clock, MapPin, User, ArrowRight } from "lucide-react";
 
-export default function AppointmentScheduled() {
+function AppointmentScheduledContent() {
     const router = useRouter();
     const searchParams = useSearchParams();
     const [isClient, setIsClient] = useState(false);
@@ -101,5 +101,13 @@ export default function AppointmentScheduled() {
                 </div>
             </div>
         </div>
+    );
+}
+
+export default function AppointmentScheduled() {
+    return (
+        <Suspense fallback={<div className="min-h-screen bg-gray-50 flex items-center justify-center font-sans">Loading...</div>}>
+            <AppointmentScheduledContent />
+        </Suspense>
     );
 }
