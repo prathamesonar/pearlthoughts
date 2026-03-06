@@ -278,15 +278,15 @@ export default function BookAppointment({ params }: { params: Promise<{ id: stri
                                 <button
                                     key={idx}
                                     onClick={() => { setSelectedDate(date); setSelectedSlot(null); }}
-                                    className={`snap-center flex-shrink-0 flex flex-col items-center justify-center p-3 rounded-2xl w-20 transition-all duration-300 \${bgStyles}`}
+                                    className={`snap-center flex-shrink-0 flex flex-col items-center justify-center p-3 rounded-2xl w-20 transition-all duration-300 ${bgStyles}`}
                                 >
-                                    <span className={`text-xs font-medium uppercase tracking-wider mb-1 \${isSelected ? 'text-cyan-100' : 'text-gray-400'}`}>
+                                    <span className={`text-xs font-medium uppercase tracking-wider mb-1 ${isSelected ? 'text-cyan-100' : 'text-gray-400'}`}>
                                         {date.toLocaleDateString('en-US', { weekday: 'short' })}
                                     </span>
-                                    <span className={`text-2xl font-black \${textStyles}`}>
+                                    <span className={`text-2xl font-black ${textStyles}`}>
                                         {date.getDate()}
                                     </span>
-                                    <span className={`text-[10px] font-bold mt-1 \${isSelected ? 'text-cyan-100' : 'text-gray-400'}`}>
+                                    <span className={`text-[10px] font-bold mt-1 ${isSelected ? 'text-cyan-100' : 'text-gray-400'}`}>
                                         {date.toLocaleDateString('en-US', { month: 'short' })}
                                     </span>
                                 </button>
@@ -318,7 +318,7 @@ export default function BookAppointment({ params }: { params: Promise<{ id: stri
                                 <button
                                     key={idx}
                                     onClick={() => setSelectedSlot(slot.time)}
-                                    className={`p-3 rounded-xl border text-center transition-all duration-200 \${isSelected ? 'bg-cyan-50 border-cyan-500 text-cyan-600 shadow-sm shadow-cyan-100 scale-105 z-10' : 'bg-white border-gray-200 hover:border-cyan-300 text-gray-700 hover:shadow-sm'}`}
+                                    className={`p-3 rounded-xl border text-center transition-all duration-200 ${isSelected ? 'bg-cyan-50 border-cyan-500 text-cyan-600 shadow-sm shadow-cyan-100 scale-105 z-10' : 'bg-white border-gray-200 hover:border-cyan-300 text-gray-700 hover:shadow-sm'}`}
                                 >
                                     <span className="font-bold text-sm block">{slot.time}</span>
                                 </button>
@@ -344,7 +344,7 @@ export default function BookAppointment({ params }: { params: Promise<{ id: stri
                 <button
                     onClick={handleBook}
                     disabled={!doctor?.available || !selectedSlot}
-                    className={`flex-1 sm:max-w-xs w-full py-4 rounded-xl font-bold flex items-center justify-center gap-2 transition-all shadow-lg \${
+                    className={`flex-1 sm:max-w-xs w-full py-4 rounded-xl font-bold flex items-center justify-center gap-2 transition-all shadow-lg ${
              (!doctor?.available || !selectedSlot) 
              ? 'bg-gray-100 text-gray-400 shadow-none cursor-not-allowed'
              : 'bg-cyan-500 hover:bg-cyan-600 text-white shadow-cyan-200 hover:-translate-y-0.5'

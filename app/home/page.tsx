@@ -155,15 +155,15 @@ export default function HomePage() {
     const navItems = [
         { id: "find", label: "Find a Doctor", icon: Search, path: "/home" },
         { id: "appointments", label: "Appointments", icon: Calendar, path: "/appointments", badge: upcomingCount },
-        { id: "records", label: "Medical Records", icon: FileText, action: () => alert("📋 Medical Records coming soon!") },
-        { id: "profile", label: "Profile", icon: User, action: () => alert("User Profile Coming Soon!") },
+        { id: "records", label: "Medical Records", icon: FileText, path: "/records" },
+        { id: "profile", label: "Profile", icon: User, path: "/profile" },
     ];
 
     return (
         <div className="min-h-screen bg-gray-50 flex flex-col md:flex-row font-sans">
 
             {/* ========== SIDEBAR (Desktop) ========== */}
-            <aside className={`hidden md:flex flex-col bg-white border-r border-gray-100 transition-all duration-300 \${sidebarCollapsed ? 'w-20' : 'w-64'}`}>
+            <aside className={`hidden md:flex flex-col bg-white border-r border-gray-100 transition-all duration-300 ${sidebarCollapsed ? 'w-20' : 'w-64'}`}>
                 <div className="h-16 flex items-center justify-between px-4 border-b border-gray-100">
                     <div className="flex items-center gap-2 text-cyan-500 overflow-hidden">
                         <Activity className="w-8 h-8 flex-shrink-0" />
@@ -186,14 +186,12 @@ export default function HomePage() {
                                         if (item.path) {
                                             router.push(item.path);
                                             setActiveTab(item.id);
-                                        } else if (item.action) {
-                                            item.action();
                                         }
                                     }}
-                                    className={`w-full flex items-center p-3 rounded-xl transition-all duration-200 group \${isActive ? 'bg-cyan-50 text-cyan-600' : 'text-gray-600 hover:bg-gray-50 hover:text-cyan-600'}`}
+                                    className={`w-full flex items-center p-3 rounded-xl transition-all duration-200 group ${isActive ? 'bg-cyan-50 text-cyan-600' : 'text-gray-900 font-semibold hover:bg-gray-100 hover:text-cyan-600'}`}
                                     title={sidebarCollapsed ? item.label : undefined}
                                 >
-                                    <Icon className={`w-5 h-5 flex-shrink-0 \${isActive ? 'text-cyan-600' : 'text-gray-400 group-hover:text-cyan-600'}`} />
+                                    <Icon className={`w-5 h-5 flex-shrink-0 ${isActive ? 'text-cyan-600' : 'text-gray-400 group-hover:text-cyan-600'}`} />
                                     {!sidebarCollapsed && (
                                         <span className="ml-3 font-medium whitespace-nowrap flex-1 text-left">{item.label}</span>
                                     )}
@@ -349,11 +347,10 @@ export default function HomePage() {
                                     <button
                                         key={spec}
                                         onClick={() => setActiveSpecialty(spec)}
-                                        className={`px-4 py-2 rounded-full text-sm font-semibold whitespace-nowrap transition-all duration-200 border \${
-                      activeSpecialty === spec 
-                      ? 'bg-cyan-500 text-white border-cyan-500 shadow-md shadow-cyan-200/50' 
-                      : 'bg-white text-gray-600 border-gray-200 hover:border-cyan-300 hover:text-cyan-600'
-                    }`}
+                                        className={`px-4 py-2 rounded-full text-sm font-semibold whitespace-nowrap transition-all duration-200 border ${activeSpecialty === spec
+                                            ? 'bg-cyan-500 text-white border-cyan-500 shadow-md shadow-cyan-200/50'
+                                            : 'bg-white text-black font-semibold border-gray-200 hover:border-cyan-300 hover:text-cyan-600'
+                                            }`}
                                     >
                                         {spec}
                                     </button>
@@ -367,7 +364,7 @@ export default function HomePage() {
                                 <div>
                                     <h2 className="text-xl md:text-2xl font-bold text-gray-900">
                                         {searchQuery
-                                            ? `Results for "\${searchQuery}"`
+                                            ? `Results for "${searchQuery}"`
                                             : activeSpecialty !== "All"
                                                 ? activeSpecialty
                                                 : "Recommended Doctors"}
@@ -378,13 +375,13 @@ export default function HomePage() {
                                 <div className="hidden sm:flex bg-gray-100 p-1 rounded-lg">
                                     <button
                                         onClick={() => setViewMode("grid")}
-                                        className={`p-1.5 rounded-md transition-colors \${viewMode === 'grid' ? 'bg-white shadow-sm text-cyan-600' : 'text-gray-500 hover:text-gray-700'}`}
+                                        className={`p-1.5 rounded-md transition-colors ${viewMode === 'grid' ? 'bg-white shadow-sm text-cyan-600' : 'text-gray-500 hover:text-gray-700'}`}
                                     >
                                         <Menu className="w-4 h-4 rotate-90" />
                                     </button>
                                     <button
                                         onClick={() => setViewMode("list")}
-                                        className={`p-1.5 rounded-md transition-colors \${viewMode === 'list' ? 'bg-white shadow-sm text-cyan-600' : 'text-gray-500 hover:text-gray-700'}`}
+                                        className={`p-1.5 rounded-md transition-colors ${viewMode === 'list' ? 'bg-white shadow-sm text-cyan-600' : 'text-gray-500 hover:text-gray-700'}`}
                                     >
                                         <Menu className="w-4 h-4" />
                                     </button>
@@ -392,14 +389,14 @@ export default function HomePage() {
                             </div>
 
                             {filteredDoctors.length > 0 ? (
-                                <div className={`grid gap-6 \${viewMode === 'grid' ? 'grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4' : 'grid-cols-1 md:grid-cols-2 lg:grid-cols-3'}`}>
+                                <div className={`grid gap-6 ${viewMode === 'grid' ? 'grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4' : 'grid-cols-1 md:grid-cols-2 lg:grid-cols-3'}`}>
                                     {filteredDoctors.map((doctor) => (
                                         <article
                                             key={doctor.id}
                                             onClick={() => handleDoctorClick(doctor)}
-                                            className={`bg-white rounded-2xl border border-gray-200 hover:border-cyan-300 shadow-sm hover:shadow-lg transition-all duration-300 cursor-pointer overflow-hidden group flex \${viewMode === 'list' ? 'flex-row' : 'flex-col'}`}
+                                            className={`bg-white rounded-2xl border border-gray-200 hover:border-cyan-300 shadow-sm hover:shadow-lg transition-all duration-300 cursor-pointer overflow-hidden group flex ${viewMode === 'list' ? 'flex-row' : 'flex-col'}`}
                                         >
-                                            <div className={`relative bg-gray-100 \${viewMode === 'list' ? 'w-32 flex-shrink-0' : 'w-full aspect-[4/3]'} overflow-hidden`}>
+                                            <div className={`relative bg-gray-100 ${viewMode === 'list' ? 'w-32 flex-shrink-0' : 'w-full aspect-[4/3]'} overflow-hidden`}>
                                                 {doctor.image ? (
                                                     <img
                                                         src={doctor.image}
@@ -417,7 +414,7 @@ export default function HomePage() {
                                                         onClick={(e) => { e.stopPropagation(); toggleFavorite(doctor.id); }}
                                                         className="p-2 bg-white/80 backdrop-blur-md rounded-full shadow-sm hover:bg-white transition-colors"
                                                     >
-                                                        <Heart className={`w-4 h-4 \${favorites.includes(doctor.id) ? 'fill-rose-500 text-rose-500' : 'text-gray-400 hover:text-rose-500'}`} />
+                                                        <Heart className={`w-4 h-4 ${favorites.includes(doctor.id) ? 'fill-rose-500 text-rose-500' : 'text-gray-400 hover:text-rose-500'}`} />
                                                     </button>
                                                 </div>
 
@@ -459,11 +456,10 @@ export default function HomePage() {
                                                     </div>
                                                     <button
                                                         disabled={!doctor.available}
-                                                        className={`px-4 py-2 rounded-xl text-sm font-bold transition-all \${
-                              doctor.available 
-                              ? 'bg-cyan-50 text-cyan-600 hover:bg-cyan-500 hover:text-white' 
-                              : 'bg-gray-100 text-gray-400 cursor-not-allowed'
-                            }`}
+                                                        className={`px-4 py-2 rounded-xl text-sm font-bold transition-all ${doctor.available
+                                                            ? 'bg-cyan-50 text-cyan-600 hover:bg-cyan-500 hover:text-white'
+                                                            : 'bg-gray-100 text-gray-400 cursor-not-allowed'
+                                                            }`}
                                                     >
                                                         Book
                                                     </button>
@@ -505,14 +501,12 @@ export default function HomePage() {
                                 if (item.path) {
                                     router.push(item.path);
                                     setActiveTab(item.id);
-                                } else if (item.action) {
-                                    item.action();
-                                }
+                                } 
                             }}
-                            className={`flex flex-col items-center gap-1 relative p-2 rounded-xl transition-colors \${isActive ? 'text-cyan-600' : 'text-gray-400'}`}
+                            className={`flex flex-col items-center gap-1 relative p-2 rounded-xl transition-colors ${isActive ? 'text-cyan-600' : 'text-gray-400'}`}
                         >
-                            <Icon className="\${isActive ? 'w-6 h-6' : 'w-5 h-5'}" />
-                            <span className={`text-[10px] font-medium \${isActive ? 'font-bold' : ''}`}>
+                            <Icon className="${isActive ? 'w-6 h-6' : 'w-5 h-5'}" />
+                            <span className={`text-[10px] font-medium ${isActive ? 'font-bold' : ''}`}>
                                 {item.id === 'appointments' ? 'Appts' : item.id === 'find' ? 'Find' : item.label}
                             </span>
                             {item.badge && item.badge > 0 && (

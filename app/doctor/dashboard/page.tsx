@@ -151,7 +151,7 @@ export default function DoctorDashboard() {
                 <div className="p-6 border-b border-gray-100 flex flex-col items-center text-center">
                     <div className="w-20 h-20 rounded-2xl bg-gray-100 border-4 border-white shadow-md overflow-hidden mb-3 relative">
                         {doctor.image ? <img src={doctor.image} alt={doctor.name} className="w-full h-full object-cover" /> : <div className="w-full h-full flex items-center justify-center text-2xl font-bold text-gray-400 bg-gray-100">{doctor.name.charAt(0)}</div>}
-                        <div className={`absolute bottom-0 right-0 w-4 h-4 rounded-full border-2 border-white \${doctor.available ? 'bg-emerald-500' : 'bg-gray-400'}`}></div>
+                        <div className={`absolute bottom-0 right-0 w-4 h-4 rounded-full border-2 border-white ${doctor.available ? 'bg-emerald-500' : 'bg-gray-400'}`}></div>
                     </div>
                     <h2 className="font-bold text-gray-900 leading-tight">Doctor 👋</h2>
                     <p className="text-xs font-bold text-cyan-600 uppercase tracking-widest mt-1">{doctor.specialty}</p>
@@ -167,7 +167,7 @@ export default function DoctorDashboard() {
                         <button
                             key={item.id}
                             onClick={() => setActiveTab(item.id)}
-                            className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl transition-all font-bold text-sm \${activeTab === item.id ? 'bg-cyan-500 text-white shadow-md shadow-cyan-200/50' : 'text-gray-500 hover:bg-gray-50 hover:text-cyan-600'}`}
+                            className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl transition-all font-bold text-sm ${activeTab === item.id ? 'bg-cyan-500 text-white shadow-md shadow-cyan-200/50' : 'text-gray-900 hover:bg-gray-100 hover:text-cyan-600'}`}
                         >
                             <item.icon className="w-5 h-5" /> {item.label}
                         </button>
@@ -192,7 +192,7 @@ export default function DoctorDashboard() {
                         <span className="text-sm font-bold text-gray-600 uppercase tracking-wide mr-2">Status</span>
                         <button
                             onClick={toggleAvailability}
-                            className={`px-4 py-1.5 rounded-full text-xs font-black uppercase tracking-wider transition-all flex items-center gap-2 shadow-sm \${doctor.available ? 'bg-emerald-500 text-white shadow-emerald-200' : 'bg-gray-200 text-gray-500 hover:bg-gray-300'}`}
+                            className={`px-4 py-1.5 rounded-full text-xs font-black uppercase tracking-wider transition-all flex items-center gap-2 shadow-sm ${doctor.available ? 'bg-emerald-500 text-white shadow-emerald-200' : 'bg-gray-200 text-gray-500 hover:bg-gray-300'}`}
                         >
                             <Power className="w-3.5 h-3.5" /> {doctor.available ? "Online" : "Offline"}
                         </button>
@@ -421,7 +421,7 @@ export default function DoctorDashboard() {
                                                     <span className="bg-gray-100 text-gray-600 text-xs font-bold px-3 py-1 rounded-full">{apt.tokenNumber}</span>
                                                 </td>
                                                 <td className="py-4 px-6">
-                                                    <span className={`text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wide \${apt.type === 'upcoming' ? 'bg-amber-100 text-amber-700' : apt.type === 'completed' ? 'bg-emerald-100 text-emerald-700' : 'bg-gray-100 text-gray-500'}`}>
+                                                    <span className={`text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wide ${apt.type === 'upcoming' ? 'bg-amber-100 text-amber-700' : apt.type === 'completed' ? 'bg-emerald-100 text-emerald-700' : 'bg-gray-100 text-gray-500'}`}>
                                                         {apt.status}
                                                     </span>
                                                 </td>

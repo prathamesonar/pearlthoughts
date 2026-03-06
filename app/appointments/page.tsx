@@ -207,8 +207,8 @@ export default function AppointmentsPage() {
     const navItems = [
         { id: "find", label: "Find a Doctor", short: "Find", icon: Search, action: () => router.push("/home") },
         { id: "appointments", label: "Appointments", short: "Visits", icon: Calendar, action: () => { } },
-        { id: "records", label: "Records", short: "Data", icon: FileText, action: () => router.push("/prescriptions") },
-        { id: "profile", label: "Profile", short: "Me", icon: User, action: () => alert("Profile Coming Soon!") },
+        { id: "records", label: "Records", short: "Data", icon: FileText, action: () => router.push("/records") },
+        { id: "profile", label: "Profile", short: "Me", icon: User, action: () => router.push("/profile") },
     ];
 
     return (
@@ -216,7 +216,7 @@ export default function AppointmentsPage() {
 
             {/* Toast Notification */}
             {toast.show && (
-                <div className={`fixed top-4 right-4 z-50 px-6 py-3 rounded-xl shadow-xl flex items-center gap-3 animate-in slide-in-from-top-4 \${toast.type === 'success' ? 'bg-emerald-500 text-white' : toast.type === 'error' ? 'bg-rose-500 text-white' : 'bg-gray-800 text-white'}`}>
+                <div className={`fixed top-4 right-4 z-50 px-6 py-3 rounded-xl shadow-xl flex items-center gap-3 animate-in slide-in-from-top-4 ${toast.type === 'success' ? 'bg-emerald-500 text-white' : toast.type === 'error' ? 'bg-rose-500 text-white' : 'bg-gray-800 text-white'}`}>
                     {toast.type === 'success' ? <CheckCircle2 className="w-5 h-5" /> : toast.type === 'error' ? <XCircle className="w-5 h-5" /> : <Clock className="w-5 h-5" />}
                     <span className="font-medium text-sm">{toast.message}</span>
                     <button onClick={() => setToast(p => ({ ...p, show: false }))}><X className="w-4 h-4 ml-2 opacity-70 hover:opacity-100" /></button>
@@ -227,7 +227,7 @@ export default function AppointmentsPage() {
             {modal.open && (
                 <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-gray-900/50 backdrop-blur-sm animate-in fade-in" onClick={() => setModal(p => ({ ...p, open: false }))}>
                     <div className="bg-white rounded-2xl w-full max-w-sm p-6 shadow-2xl scale-100 transition-transform" onClick={e => e.stopPropagation()}>
-                        <div className={`w-12 h-12 rounded-full mb-4 flex items-center justify-center \${modal.confirmVariant === 'danger' ? 'bg-rose-100 text-rose-600' : 'bg-cyan-100 text-cyan-600'}`}>
+                        <div className={`w-12 h-12 rounded-full mb-4 flex items-center justify-center ${modal.confirmVariant === 'danger' ? 'bg-rose-100 text-rose-600' : 'bg-cyan-100 text-cyan-600'}`}>
                             {modal.confirmVariant === 'danger' ? <XCircle className="w-6 h-6" /> : <CheckCircle2 className="w-6 h-6" />}
                         </div>
                         <h3 className="text-xl font-bold text-gray-900 mb-2">{modal.title}</h3>
@@ -241,7 +241,7 @@ export default function AppointmentsPage() {
                             </button>
                             <button
                                 onClick={modal.onConfirm}
-                                className={`flex-1 px-4 py-2.5 font-bold rounded-xl transition-colors text-white \${modal.confirmVariant === 'danger' ? 'bg-rose-500 hover:bg-rose-600 shadow-rose-200 shadow-lg' : 'bg-cyan-500 hover:bg-cyan-600 shadow-cyan-200 shadow-lg'}`}
+                                className={`flex-1 px-4 py-2.5 font-bold rounded-xl transition-colors text-white ${modal.confirmVariant === 'danger' ? 'bg-rose-500 hover:bg-rose-600 shadow-rose-200 shadow-lg' : 'bg-cyan-500 hover:bg-cyan-600 shadow-cyan-200 shadow-lg'}`}
                             >
                                 {modal.confirmLabel}
                             </button>
@@ -251,7 +251,7 @@ export default function AppointmentsPage() {
             )}
 
             {/* Sidebar */}
-            <aside className={`hidden md:flex flex-col bg-white border-r border-gray-100 transition-all duration-300 \${sidebarCollapsed ? 'w-20' : 'w-64'}`}>
+            <aside className={`hidden md:flex flex-col bg-white border-r border-gray-100 transition-all duration-300 ${sidebarCollapsed ? 'w-20' : 'w-64'}`}>
                 <div className="h-16 flex items-center justify-between px-4 border-b border-gray-100">
                     <div className="flex items-center gap-2 text-cyan-500 overflow-hidden">
                         <Calendar className="w-8 h-8 flex-shrink-0" />
@@ -265,8 +265,8 @@ export default function AppointmentsPage() {
                     {navItems.map(item => {
                         const isActive = item.id === 'appointments';
                         return (
-                            <button key={item.id} onClick={item.action} className={`w-full flex items-center p-3 rounded-xl transition-colors group \${isActive ? 'bg-cyan-50 text-cyan-600' : 'text-gray-600 hover:bg-gray-50 hover:text-cyan-600'}`}>
-                                <item.icon className={`w-5 h-5 flex-shrink-0 \${isActive ? 'text-cyan-600' : 'text-gray-400 group-hover:text-cyan-600'}`} />
+                            <button key={item.id} onClick={item.action} className={`w-full flex items-center p-3 rounded-xl transition-colors group ${isActive ? 'bg-cyan-50 text-cyan-600' : 'text-gray-900 font-semibold hover:bg-gray-100 hover:text-cyan-600'}`}>
+                                <item.icon className={`w-5 h-5 flex-shrink-0 ${isActive ? 'text-cyan-600' : 'text-gray-400 group-hover:text-cyan-600'}`} />
                                 {!sidebarCollapsed && <span className="ml-3 font-medium flex-1 text-left">{item.label}</span>}
                                 {!sidebarCollapsed && item.id === 'appointments' && tabCounts.upcoming > 0 && (
                                     <span className="ml-2 bg-rose-100 text-rose-600 py-0.5 px-2 rounded-full text-xs font-bold">{tabCounts.upcoming}</span>
@@ -318,11 +318,11 @@ export default function AppointmentsPage() {
                         <button
                             key={tab}
                             onClick={() => setActiveTab(tab)}
-                            className={`py-4 relative text-sm font-bold transition-colors whitespace-nowrap \${activeTab === tab ? 'text-cyan-600' : 'text-gray-500 hover:text-gray-900'}`}
+                            className={`py-4 relative text-sm font-bold transition-colors whitespace-nowrap ${activeTab === tab ? 'text-cyan-600' : 'text-gray-500 hover:text-gray-900'}`}
                         >
                             <span className="capitalize">{tab}</span>
                             {tabCounts[tab] > 0 && (
-                                <span className={`ml-2 px-2 py-0.5 rounded-full text-[10px] bg-gray-100 text-gray-500 \${activeTab === tab ? 'bg-cyan-100 text-cyan-600' : ''}`}>
+                                <span className={`ml-2 px-2 py-0.5 rounded-full text-[10px] bg-gray-100 text-gray-500 ${activeTab === tab ? 'bg-cyan-100 text-cyan-600' : ''}`}>
                                     {tabCounts[tab]}
                                 </span>
                             )}
@@ -348,7 +348,7 @@ export default function AppointmentsPage() {
                                             <div>
                                                 <div className="flex items-center gap-2 mb-1">
                                                     <h3 className="font-bold text-gray-900 text-lg">{apt.doctorName}</h3>
-                                                    <span className={`px-2 py-0.5 rounded-md text-[10px] font-bold uppercase \${apt.type === 'upcoming' ? 'bg-cyan-50 text-cyan-600' : apt.type === 'completed' ? 'bg-emerald-50 text-emerald-600' : 'bg-gray-100 text-gray-500'}`}>
+                                                    <span className={`px-2 py-0.5 rounded-md text-[10px] font-bold uppercase ${apt.type === 'upcoming' ? 'bg-cyan-50 text-cyan-600' : apt.type === 'completed' ? 'bg-emerald-50 text-emerald-600' : 'bg-gray-100 text-gray-500'}`}>
                                                         {apt.status}
                                                     </span>
                                                 </div>
@@ -443,10 +443,10 @@ export default function AppointmentsPage() {
                     <button
                         key={item.id}
                         onClick={item.action}
-                        className={`flex flex-col items-center gap-1 relative p-2 rounded-xl transition-colors \${item.id === 'appointments' ? 'text-cyan-600' : 'text-gray-400'}`}
+                        className={`flex flex-col items-center gap-1 relative p-2 rounded-xl transition-colors ${item.id === 'appointments' ? 'text-cyan-600' : 'text-gray-400'}`}
                     >
                         <item.icon className="w-5 h-5" />
-                        <span className={`text-[10px] font-medium \${item.id === 'appointments' ? 'font-bold' : ''}`}>
+                        <span className={`text-[10px] font-medium ${item.id === 'appointments' ? 'font-bold' : ''}`}>
                             {item.short}
                         </span>
                         {item.id === 'appointments' && tabCounts.upcoming > 0 && (
