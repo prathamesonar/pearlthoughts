@@ -84,6 +84,7 @@ function OTPContent() {
           if (pendingRaw) {
             const doctor: DoctorUser = JSON.parse(pendingRaw);
             setDoctorSession(doctor);
+            localStorage.setItem("doctorSessionId", doctor.id.replace(/\D/g, '') || "1");
             sessionStorage.removeItem("schedula_login_pending_doctor");
           }
           Swal.fire({
@@ -93,7 +94,7 @@ function OTPContent() {
             timer: 1500,
             showConfirmButton: false,
           }).then(() => {
-            router.push("/doctor-dashboard");
+            router.push("/doctor/dashboard");
           });
         } else {
           // Doctor signup — register doctor
@@ -130,6 +131,7 @@ function OTPContent() {
         if (pendingRaw) {
           const user: User = JSON.parse(pendingRaw);
           setUserSession(user);
+          localStorage.setItem("userEmail", user.email);
           sessionStorage.removeItem("schedula_login_pending");
         }
         Swal.fire({
@@ -139,7 +141,7 @@ function OTPContent() {
           timer: 1500,
           showConfirmButton: false,
         }).then(() => {
-          router.push("/dashboard");
+          router.push("/home");
         });
       } else {
         // User signup
@@ -166,7 +168,7 @@ function OTPContent() {
           text: "Your account has been successfully created.",
           confirmButtonColor: "#22d3ee",
         }).then(() => {
-          router.push("/login");
+          router.push("/home");
         });
       }
     } else {
